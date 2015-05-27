@@ -13,7 +13,8 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{85BBACAC-C14C-496F-9353-564A5138FEC9}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>My27Gp3Skelton</RootNamespace>
+    <RootNamespace>DiceBattle</RootNamespace>
+    <ProjectName>DiceBattle</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

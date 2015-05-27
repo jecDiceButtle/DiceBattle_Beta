@@ -191,7 +191,6 @@ void gplib::system::OnCreate()
 	//カメラからビュー行列と射影行列を設定
 	meshManage->getG()->Setup3DEnv(dxCamera);
 
-	meshManage->loadMesh("player1", "balance_025.x", "res/x/", DX3DMESHMANAGER::MESHTYPE::ANIMMESH);
 	meshManage->loadMesh("dice", "dice.x", "res/x/", DX3DMESHMANAGER::MESHTYPE::MESH);
 	meshManage->loadMesh("board", "board.x", "res/x/", DX3DMESHMANAGER::MESHTYPE::MESH);
 
