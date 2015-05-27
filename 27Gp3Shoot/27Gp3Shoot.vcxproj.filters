@@ -1,0 +1,333 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="プログラムファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="プログラムファイル\lib">
+      <UniqueIdentifier>{46cb6a3b-5b55-4c2f-97f1-91b3ca4a8260}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="プログラムファイル\lib\ext">
+      <UniqueIdentifier>{ddb34ed1-62c7-43f5-acdf-54b453b11101}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="プログラムファイル\lib\3d">
+      <UniqueIdentifier>{ad15e082-7e24-45cd-852c-9844ec492792}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="プログラムファイル\main">
+      <UniqueIdentifier>{b035ed26-78e0-473f-b0a6-82382e187532}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="プログラムファイル\utitlty">
+      <UniqueIdentifier>{b79a7587-8e00-45fe-b328-c4e5d52b2aed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="プログラムファイル\game">
+      <UniqueIdentifier>{6df50ba1-9d5c-4644-a949-fa70f7e5c8f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="プログラムファイル\game\Player">
+      <UniqueIdentifier>{94537675-3be0-486c-851c-5c582e482403}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="プログラムファイル\game\Board">
+      <UniqueIdentifier>{326da329-711c-4dcf-84ce-f783395eaf76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="プログラムファイル\game\Dice">
+      <UniqueIdentifier>{4407d0e2-5bcf-4872-9c89-4216043e86e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="プログラムファイル\game\DiceManager">
+      <UniqueIdentifier>{98658e91-0e4a-446d-a18e-f4dae2f6f392}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="プログラムファイル\game\camera">
+      <UniqueIdentifier>{c67055e0-d991-47b5-b569-460edc6367e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="プログラムファイル\game\Back">
+      <UniqueIdentifier>{bb7debec-47c2-4584-9541-dc7f505a3ad7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="プログラムファイル\game\Monster">
+      <UniqueIdentifier>{d3d3008a-e19d-4868-a84f-c7873fc7e016}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="プログラムファイル\game\UI">
+      <UniqueIdentifier>{41857cdb-a2ef-47ba-a897-d5bce9f427aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="プログラムファイル\Title">
+      <UniqueIdentifier>{aeca117f-5718-4a49-ab76-3f141c4596f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="プログラムファイル\game\Stage1">
+      <UniqueIdentifier>{ce603a90-c802-4ae6-a51c-c99181d1d196}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="プログラムファイル\game\Stage1\その他">
+      <UniqueIdentifier>{ec0018b0-c5d7-4c25-a111-3371896950aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="プログラムファイル\game\Button">
+      <UniqueIdentifier>{f711eaa0-2ce0-4a07-8999-c015ad2934cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="プログラムファイル\menu">
+      <UniqueIdentifier>{1e481037-0ed4-4601-b563-31ab7898ea03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="プログラムファイル\game\Stage1\rule">
+      <UniqueIdentifier>{a9bea9dd-a8f3-49bd-8b45-d82ca82ffc30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="プログラムファイル\game\Stage1\phase">
+      <UniqueIdentifier>{66f4f73f-fa04-4bf5-bad4-5ccbdc86a850}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\lib\gplib.h">
+      <Filter>プログラムファイル\lib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\ci_ext\object.hpp">
+      <Filter>プログラムファイル\lib\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\ci_ext\DrawObj.hpp">
+      <Filter>プログラムファイル\lib\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\ci_ext\vec3.hpp">
+      <Filter>プログラムファイル\lib\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\ci_ext\math.hpp">
+      <Filter>プログラムファイル\lib\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\ci_ext\Counter.hpp">
+      <Filter>プログラムファイル\lib\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\ci_ext\xinput.hpp">
+      <Filter>プログラムファイル\lib\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\ci_ext\Line.hpp">
+      <Filter>プログラムファイル\lib\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\ci_ext\Polygon.hpp">
+      <Filter>プログラムファイル\lib\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\ci_ext\Triangle.hpp">
+      <Filter>プログラムファイル\lib\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\ci_ext\ci_ext.hpp">
+      <Filter>プログラムファイル\lib\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\ci_ext\Console.hpp">
+      <Filter>プログラムファイル\lib\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\ci_ext\define.hpp">
+      <Filter>プログラムファイル\lib\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\ci_ext\MeasureTime.hpp">
+      <Filter>プログラムファイル\lib\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\ci_ext\color.hpp">
+      <Filter>プログラムファイル\lib\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\dx_media_\dx.h">
+      <Filter>プログラムファイル\lib\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\dx_media_\dx_anime_cont_auxiliary.h">
+      <Filter>プログラムファイル\lib\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\dx_media_\dx_anime_mesh.h">
+      <Filter>プログラムファイル\lib\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\dx_media_\dx_base_mesh.h">
+      <Filter>プログラムファイル\lib\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\dx_media_\dx_camera.h">
+      <Filter>プログラムファイル\lib\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\dx_media_\dx_font.h">
+      <Filter>プログラムファイル\lib\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\dx_media_\dx_graphics3d.h">
+      <Filter>プログラムファイル\lib\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\dx_media_\dx_mesh.h">
+      <Filter>プログラムファイル\lib\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\dx_media_\dx_piece_texture.h">
+      <Filter>プログラムファイル\lib\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\dx_media_\dx_texture.h">
+      <Filter>プログラムファイル\lib\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\dx_media_\dx3dmeshmanager.h">
+      <Filter>プログラムファイル\lib\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\dx_media_\media_manager.h">
+      <Filter>プログラムファイル\lib\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\dx_media_\mesh_manager.h">
+      <Filter>プログラムファイル\lib\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\dx_media_\texture_manager.h">
+      <Filter>プログラムファイル\lib\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\CharBase.h">
+      <Filter>プログラムファイル\utitlty</Filter>
+    </ClInclude>
+    <ClInclude Include="src\easing.h">
+      <Filter>プログラムファイル\utitlty</Filter>
+    </ClInclude>
+    <ClInclude Include="src\effect.h">
+      <Filter>プログラムファイル\utitlty</Filter>
+    </ClInclude>
+    <ClInclude Include="src\effect3D.h">
+      <Filter>プログラムファイル\utitlty</Filter>
+    </ClInclude>
+    <ClInclude Include="src\script.hpp">
+      <Filter>プログラムファイル\game\Stage1\その他</Filter>
+    </ClInclude>
+    <ClInclude Include="src\movableObject.h">
+      <Filter>プログラムファイル\game\Stage1\その他</Filter>
+    </ClInclude>
+    <ClInclude Include="src\stage.h">
+      <Filter>プログラムファイル\game\Stage1</Filter>
+    </ClInclude>
+    <ClInclude Include="src\timer.h">
+      <Filter>プログラムファイル\utitlty</Filter>
+    </ClInclude>
+    <ClInclude Include="src\dicemanager.h">
+      <Filter>プログラムファイル\game\DiceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\dice.h">
+      <Filter>プログラムファイル\game\Dice</Filter>
+    </ClInclude>
+    <ClInclude Include="src\board.h">
+      <Filter>プログラムファイル\game\Board</Filter>
+    </ClInclude>
+    <ClInclude Include="src\camera.h">
+      <Filter>プログラムファイル\game\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\back.h">
+      <Filter>プログラムファイル\game\Back</Filter>
+    </ClInclude>
+    <ClInclude Include="src\monster.h">
+      <Filter>プログラムファイル\game\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ui.h">
+      <Filter>プログラムファイル\game\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\player.h">
+      <Filter>プログラムファイル\game\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Title.hpp">
+      <Filter>プログラムファイル\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="src\button.h">
+      <Filter>プログラムファイル\game\Button</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Menu.hpp">
+      <Filter>プログラムファイル\menu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rule.h">
+      <Filter>プログラムファイル\game\Stage1\rule</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rule_turn.hpp">
+      <Filter>プログラムファイル\game\Stage1\rule</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rule_move.hpp">
+      <Filter>プログラムファイル\game\Stage1\rule</Filter>
+    </ClInclude>
+    <ClInclude Include="src\phase_main.hpp">
+      <Filter>プログラムファイル\game\Stage1\phase</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\lib\gplib.cpp">
+      <Filter>プログラムファイル\lib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\dx_media_\dx_anime_cont_auxiliary.cpp">
+      <Filter>プログラムファイル\lib\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\dx_media_\dx_anime_mesh.cpp">
+      <Filter>プログラムファイル\lib\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\dx_media_\dx_base_mesh.cpp">
+      <Filter>プログラムファイル\lib\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\dx_media_\dx_camera.cpp">
+      <Filter>プログラムファイル\lib\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\dx_media_\dx_font.cpp">
+      <Filter>プログラムファイル\lib\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\dx_media_\dx_graphics3d.cpp">
+      <Filter>プログラムファイル\lib\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\dx_media_\dx_mesh.cpp">
+      <Filter>プログラムファイル\lib\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\dx_media_\dx_piece_texture.cpp">
+      <Filter>プログラムファイル\lib\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\dx_media_\dx_texture.cpp">
+      <Filter>プログラムファイル\lib\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\dx_media_\dx3dmeshmanager.cpp">
+      <Filter>プログラムファイル\lib\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\dx_media_\media_manager.cpp">
+      <Filter>プログラムファイル\lib\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\dx_media_\mesh_manager.cpp">
+      <Filter>プログラムファイル\lib\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\dx_media_\texture_manager.cpp">
+      <Filter>プログラムファイル\lib\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>プログラムファイル\main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lib\CharBase.cpp">
+      <Filter>プログラムファイル\utitlty</Filter>
+    </ClCompile>
+    <ClCompile Include="src\easing.cpp">
+      <Filter>プログラムファイル\utitlty</Filter>
+    </ClCompile>
+    <ClCompile Include="src\effect.cpp">
+      <Filter>プログラムファイル\utitlty</Filter>
+    </ClCompile>
+    <ClCompile Include="src\effect3D.cpp">
+      <Filter>プログラムファイル\utitlty</Filter>
+    </ClCompile>
+    <ClCompile Include="src\timer.cpp">
+      <Filter>プログラムファイル\utitlty</Filter>
+    </ClCompile>
+    <ClCompile Include="src\movableObject.cpp">
+      <Filter>プログラムファイル\game\Stage1\その他</Filter>
+    </ClCompile>
+    <ClCompile Include="src\stage.cpp">
+      <Filter>プログラムファイル\game\Stage1</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dicemanager.cpp">
+      <Filter>プログラムファイル\game\DiceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dice.cpp">
+      <Filter>プログラムファイル\game\Dice</Filter>
+    </ClCompile>
+    <ClCompile Include="src\board.cpp">
+      <Filter>プログラムファイル\game\Board</Filter>
+    </ClCompile>
+    <ClCompile Include="src\camera.cpp">
+      <Filter>プログラムファイル\game\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\back.cpp">
+      <Filter>プログラムファイル\game\Back</Filter>
+    </ClCompile>
+    <ClCompile Include="src\monster.cpp">
+      <Filter>プログラムファイル\game\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui.cpp">
+      <Filter>プログラムファイル\game\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\player.cpp">
+      <Filter>プログラムファイル\game\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="src\button.cpp">
+      <Filter>プログラムファイル\game\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rule.cpp">
+      <Filter>プログラムファイル\game\Stage1\rule</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="src\res.rc">
+      <Filter>プログラムファイル\utitlty</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

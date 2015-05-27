@@ -1,0 +1,9 @@
+diff a/27Gp3Shoot/src/dice.cpp b/27Gp3Shoot/src/dice.cpp	(rejected hunks)
+@@ -162,6 +162,7 @@
+ <<<<<<< HEAD
+ 		meshManage->drawMesh(pos_, "dice", angle, ARGB(255, 200, 200, 200), scale);
+ =======
++		ci_ext::Vec3f pos(xx, yy, zz);
+ 		meshManage->drawMesh(pos, "dice", angle, ARGB(255, 200, 200, 200), scale);
+ 
+ 		//insertAsChild(new Monster("monster", pos, 0));

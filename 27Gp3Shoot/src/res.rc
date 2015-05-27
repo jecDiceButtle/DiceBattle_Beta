@@ -1,0 +1,46 @@
+
+#include "winres.h"
+// Dialog 関連define
+#define IDD_DIALOG1                     101
+#define ID_DLG_INPUT                    101
+#define ID_EDIT                         1001
+#define ID_LABEL                        1002
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+ID_DLG_INPUT DIALOGEX 0, 0, 192, 73
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "確認"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "文字を入力してください",ID_LABEL,12,12,166,8
+    EDITTEXT        ID_EDIT,12,24,168,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,72,48,50,14
+    PUSHBUTTON      "キャンセル",IDCANCEL,131,48,50,14
+END
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// ICON
+//
+MAIN		ICON DISCARDABLE	"../res/Gp3.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    ID_DLG_INPUT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 185
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 66
+    END
+END
+#endif    // APSTUDIO_INVOKED
