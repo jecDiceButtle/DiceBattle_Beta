@@ -168,6 +168,40 @@ namespace game
 		monsobj->monster_move(pos_);
 
 	}
+
+	void Dice::receiveMsg(std::weak_ptr<Object>& sender, const std::string& msg)
+	{
+		//メッセージ分割
+		auto msgVec = gplib::text::split(msg, ",");
+
+		//移動のときの処理
+		if (msgVec[0] == "move")
+		{
+			ci_ext::Vec3i masu = ci_ext::Vec3i::zero();		//移動先のマス座標
+			int		fTime;									//移動フレーム時間
+
+			//更に分割
+			for (auto ms : msgVec){
+				auto mVec = gplib::text::split(ms, "=");
+				
+				//Xマス座標を取得
+				if (mVec[0] == "x" && mVec.size() > 1)
+					masu.x(stoi(mVec[1]));
+
+				//Zマス座標を取得
+				if (mVec[0] == "z" && mVec.size() > 1)
+					masu.z(stoi(mVec[1]));
+
+				//フレーム時間を取得
+				if (mVec[0] == "frame" && mVec.size() > 1)
+					fTime = stoi(mVec[1]);
+			}
+
+			prepareMove(masu);
+		}
+			
+	}
+
 	//===================================
 
 
@@ -412,8 +446,8 @@ namespace game
 	}
 
 	/*
-	@brief							移動を準備（移動に必要な値等をセット）
-	@return							なし
+		@brief					移動を準備（移動に必要な値等をセット）
+		@return					なし
 	*/
 	void Dice::prepareMove(Vec3i &masu)
 	{
@@ -470,7 +504,7 @@ namespace game
 		Vec3f pos = (0.f, 0.f, 0.f);
 
 		pos.x((float)((masu.x() - 2) * 10));
-		pos.z((float)((masu.y() - 2) * 10));
+		pos.z((float)((masu.z() - 2) * 10));
 
 		return pos;
 	}

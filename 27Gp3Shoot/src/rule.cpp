@@ -2,16 +2,23 @@
 *	ファイル名	：	rule.cpp
 *	製作者		：	丸山洋一郎
 *	制作日		：	2015/05/27
-*	内容		：	ゲーム進行中の処理全般。
-*					全ての処理の核となる部分。
-*					ダイスなどのオブジェクトを所持。
-*					ゲーム進行のフェーズを管理。
+*	内容		：	ゲーム進行中の処理全般。全ての処理の核となる部分。
+*					フェーズやプレイヤーデータなどの基本データを持つ。
+*					ダイスなどのオブジェクトを所持。テキストで命令を送る。
+*					ゲーム進行のフェーズを管理。生成すれば自動的に処理する。
 */
 
 
 #include "rule.h"
+#include "phase_main.h"
 #include <memory>
 #include <string>
+
+#include "camera.h"
+#include "back.h"
+#include "dice.h"
+#include "board.h"
+
 
 namespace game
 {
@@ -24,7 +31,6 @@ namespace game
 	//関数記述
 	//**************************************************************************************//
 	
-	//
 	ci_ext::Vec3i Rule::getDiceMasu()
 	{
 		//選択されているダイスの座標を返す
@@ -33,26 +39,27 @@ namespace game
 
 	void Rule::sendMsg(const std::string& msg, const std::string& process)
 	{
-		//送信先を決める
+		//=====================================
+		//	送信先を決める
+		//=====================================
 		std::weak_ptr<ci_ext::Object> receiver;
 		
-		//processをメッセージ分割し解読
-		auto msgVec = gplib::text::split(msg, ",");
+		//processを分割し解読
+		auto msgVec = gplib::text::split(process, ",");
 		for (auto ms : msgVec){
-
-			//=====================================
-			//	処理ごと追加していく
-			//=====================================
 
 			//移動のとき
 			if (ms == "movedice")
 			{
-				//現在選択中のダイス
+				//現在選択中のダイスに送信する
 				receiver = player_[(int)turn_].dice_[diceno_].p_dice;
+				break;
 			}
 		}
 
-		//送信
+		//=====================================
+		//	送信
+		//=====================================
 		postMsg(receiver, msg);
 	}
 	
@@ -86,19 +93,110 @@ namespace game
 		return board_[pos.x()][pos.z()];
 	}
 
+	void Rule::NextPhase()
+	{
+		//++++++++++++++++++++++++++++++++++++++++++++
+		//	カットイン待ち時間（マジックナンバー)
+		int wait = 120;
+		//++++++++++++++++++++++++++++++++++++++++++++
+
+
+		//現在動作してるフェーズは削除
+		//フェーズオブジェクト内でも削除させるが一応
+		auto objs = getObjectsFromChildren({ "phase" });
+		for (auto obj : objs){
+			obj.lock()->kill();
+		}
+		
+		//フェーズの変更と、次のフェーズの読み込み
+		switch (phase_)
+		{
+		case game::Rule::Phase::SUMMON:
+			phase_ = Phase::MAIN;
+			insertAsChildSleep(new PhaseMain("phase_main", this->selfPtr()),wait);
+			break;
+
+		case game::Rule::Phase::MAIN:
+			phase_ = Phase::BATTLE;
+			//insertAsChild(new PhaseBattle("phase_battle", this->selfPtr()));
+			break;
+
+		case game::Rule::Phase::BATTLE:
+			phase_ = Phase::SUMMON;
+			//insertAsChild(new PhaseSummon("phase_summon", this->selfPtr()));
+
+			//次のプレイヤーターンへ
+			turn_ = ((turn_ == Turn::PLAYER_A) ? Turn::PLAYER_B : Turn::PLAYER_A);
+			break;
+		}
+
+	}
+
 	//**************************************************************************************//
 	//デフォルト関数
 	//**************************************************************************************//
 
 	Rule::Rule(const std::string& objectName)
 		:
-		Object(objectName)
+		Object(objectName),
+		phase_(SUMMON),
+		turn_(PLAYER_A)
 	{
-
+		diceno_ = 0;
 	}
 	void Rule::init()
 	{
+		//++++++++++++++++++++++++++++++++++++++++++++
+		//	ダイスの開始マス座標（マジックナンバー）
+		const ci_ext::Vec3i STARTMASU[2][2] =
+		{
+			{ ci_ext::Vec3i(1, 0, 0), ci_ext::Vec3i(3, 0, 0) },
+			{ ci_ext::Vec3i(1, 4, 0), ci_ext::Vec3i(3, 4, 0) }
+		};
+		//++++++++++++++++++++++++++++++++++++++++++++
 
+		//プレイヤーデータ二人分
+		for (int i = 0; i < 2; i++){
+			
+			PlayerData	player;
+			
+			//ダイス分
+			for (int j = 0; j < 2; j++){
+				DiceData dice;
+				dice.masu = STARTMASU[i][j];
+				dice.p_dice = insertAsChild(new game::Dice("dice", gplib::math::GetRandom<int>(0, 2), i, dice.masu));
+				dice.show_ = true;
+
+				player.dice_.push_back(dice);
+			}
+
+			player_.push_back(player);
+		}
+
+		//++++++++++++++++++++++++++++++++++++++++++++
+		//	ボードの状態（仮配置）
+		for (int i = 0; i < 5; i++){
+			std::vector<int> temp;
+			for (int i = 0; i < 5; i++){
+				temp.push_back(0);
+			}
+			board_.push_back(temp);
+		}
+		//++++++++++++++++++++++++++++++++++++++++++++
+
+		//オブジェクトの追加
+
+		p_board = insertAsChild(new Board("board"));		//ボード
+		p_camera = insertAsChild(new Camera("camera"));		//カメラ
+
+		insertAsChild(new Back("stageback", "TitleBack"));	//背景
+
+		//カットイン追加予定
+
+
+
+		//フェーズオブジェクト追加
+		//insertAsChild(new PhaseSummon("phase_summon", this->selfPtr()));
 	}
 	void Rule::render()
 	{
@@ -106,13 +204,46 @@ namespace game
 #ifdef _DEBUG
 		gplib::graph::Draw_2DClear();
 
+		//ターン表示
+		std::string str = "";
+		switch (turn_)
+		{
+		case game::Rule::Turn::PLAYER_A:
+			str = "プレイヤー１";
+			break;
+		case game::Rule::Turn::PLAYER_B:
+			str = "プレイヤー２";
+			break;
+		}
+		gplib::font::Draw_FontTextNC(0, 20, 0.f, str, ARGB(255, 0, 0, 0), 0);
+
+		//フェーズ表示
+		switch (phase_)
+		{
+		case game::Rule::Phase::SUMMON:
+			str = ":召喚フェーズ";
+			break;
+		case game::Rule::Phase::MAIN:
+			str = ":メインフェーズ";
+			break;
+		case game::Rule::Phase::BATTLE:
+			str = ":バトルフェーズ";
+			break;
+		}
+		gplib::font::Draw_FontTextNC(120, 20, 0.f, str, ARGB(255, 0, 0, 0), 0);
+
 		gplib::graph::Draw_2DRefresh();
 #endif
 
 	}
 	void Rule::update()
 	{
-
+		//仮配置
+#ifdef _DEBUG
+		if (gplib::input::CheckPush(gplib::input::KEY_BTN0)){
+			NextPhase();
+		}
+#endif
 	}
 }
 

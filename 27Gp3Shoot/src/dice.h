@@ -208,6 +208,9 @@ namespace game
 		void render() override;
 		void update() override;
 
+		void receiveMsg(std::weak_ptr<Object>& sender, const std::string& msg) override;
+
+
 		int getTopType();	//g‚Á‚Ä‚é‚Ì‚±‚êH
 
 		/*

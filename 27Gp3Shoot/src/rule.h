@@ -13,7 +13,7 @@ namespace game
 		//*************************************************//
 	private:
 
-		struct Dice{
+		struct DiceData{
 			
 			std::weak_ptr<ci_ext::Object> p_dice;	// ダイスのポインタ
 
@@ -25,10 +25,10 @@ namespace game
 			//表示非表示なんかもココでいいかも。
 		};
 
-		struct Player
+		struct PlayerData
 		{
-			std::vector<Dice>	dice_;				// プレイヤーの持つダイス
-			int					hp_;				// 体力
+			std::vector<DiceData>	dice_;			// プレイヤーの持つダイス
+			int						hp_;			// 体力
 		};
 
 		enum Turn{
@@ -36,15 +36,24 @@ namespace game
 			PLAYER_B,
 		};
 
+		enum Phase{
+			SUMMON,
+			MAIN,
+			BATTLE,
+		};
+
+
 		//*************************************************//
 		//　変数
 		//*************************************************//
 	private:
 
+		Phase	phase_;								// 現在のフェイズ
 		Turn	turn_;								// 現在のターンプレイヤー
 		int		diceno_;							// 選択されているダイス番号
 
-		std::vector<Player>				player_;	// プレイヤーデータ
+
+		std::vector<PlayerData>			player_;	// プレイヤーデータ
 		std::vector<std::vector<int>>	board_;		// ボードの情報
 
 
@@ -78,7 +87,7 @@ namespace game
 		/*
 			@brief			引数の場所のボード状態を確認
 			@param[in] pos	確認する場所
-			@return			ボードの状態(-1:穴 0:なし)
+			@return			ボードの状態(-1:穴 0:通常)
 		*/
 		int getBoardState(ci_ext::Vec3i pos);
 
@@ -86,11 +95,18 @@ namespace game
 		/*
 			@brief				子に送信するメッセージ(命令文)の受付
 								msgの内容を子に送信する。
+			@ATTEMTION			msgの一番初めは必ず動作命令にすること
 			@param[in]	msg		送信する命令文
 			@param[in]	process	送信先のオブジェクトなどの内容
 			@return				なし
 		*/
 		void sendMsg(const std::string& msg, const std::string& process);
+
+		/*
+			@brief				フェーズの状態変更
+			@return				なし
+		*/
+		void NextPhase();
 
 	
 		Rule(const std::string& objectName);

@@ -68,6 +68,12 @@
     <Filter Include="プログラムファイル\game\Stage1\phase">
       <UniqueIdentifier>{66f4f73f-fa04-4bf5-bad4-5ccbdc86a850}</UniqueIdentifier>
     </Filter>
+    <Filter Include="プログラムファイル\game\Stage1\Animator">
+      <UniqueIdentifier>{220871b7-3c5e-456d-af9e-3a5aeb6b1568}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="プログラムファイル\game\Stage1\rule\sub">
+      <UniqueIdentifier>{9ef83178-e7f8-4fe9-98fb-c916b24d6c07}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\lib\gplib.h">
@@ -181,9 +187,6 @@
     <ClInclude Include="src\timer.h">
       <Filter>プログラムファイル\utitlty</Filter>
     </ClInclude>
-    <ClInclude Include="src\dicemanager.h">
-      <Filter>プログラムファイル\game\DiceManager</Filter>
-    </ClInclude>
     <ClInclude Include="src\dice.h">
       <Filter>プログラムファイル\game\Dice</Filter>
     </ClInclude>
@@ -217,14 +220,17 @@
     <ClInclude Include="src\rule.h">
       <Filter>プログラムファイル\game\Stage1\rule</Filter>
     </ClInclude>
+    <ClInclude Include="src\animator.hpp">
+      <Filter>プログラムファイル\game\Stage1\Animator</Filter>
+    </ClInclude>
     <ClInclude Include="src\rule_turn.hpp">
-      <Filter>プログラムファイル\game\Stage1\rule</Filter>
+      <Filter>プログラムファイル\game\Stage1\rule\sub</Filter>
     </ClInclude>
-    <ClInclude Include="src\rule_move.hpp">
-      <Filter>プログラムファイル\game\Stage1\rule</Filter>
-    </ClInclude>
-    <ClInclude Include="src\phase_main.hpp">
+    <ClInclude Include="src\phase_main.h">
       <Filter>プログラムファイル\game\Stage1\phase</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rule_move.h">
+      <Filter>プログラムファイル\game\Stage1\rule\sub</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -294,9 +300,6 @@
     <ClCompile Include="src\stage.cpp">
       <Filter>プログラムファイル\game\Stage1</Filter>
     </ClCompile>
-    <ClCompile Include="src\dicemanager.cpp">
-      <Filter>プログラムファイル\game\DiceManager</Filter>
-    </ClCompile>
     <ClCompile Include="src\dice.cpp">
       <Filter>プログラムファイル\game\Dice</Filter>
     </ClCompile>
@@ -323,6 +326,12 @@
     </ClCompile>
     <ClCompile Include="src\rule.cpp">
       <Filter>プログラムファイル\game\Stage1\rule</Filter>
+    </ClCompile>
+    <ClCompile Include="src\phase_main.cpp">
+      <Filter>プログラムファイル\game\Stage1\phase</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rule_move.cpp">
+      <Filter>プログラムファイル\game\Stage1\rule\sub</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
