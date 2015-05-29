@@ -74,6 +74,9 @@ namespace game
 		//ダイス移動
 		auto parent = ci_ext::weak_to_shared<game::PhaseMain>(getParentPtr());
 		parent->moveDiceAnim(masu);
+		//ダイスマス座標を更新
+		rule->updateMasu(pos);
+
 
 		//アニメーション中はキー入力を受け付けない
 		this->pause();
@@ -93,7 +96,6 @@ namespace game
 	{
 		key();
 	}
-
 
 
 }

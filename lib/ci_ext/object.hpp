@@ -427,7 +427,7 @@ public:
     }
   }
   //object‚Ì–¼‘O‚ÉfindNames‚ª‚Ó‚­‚Ü‚ê‚Ä‚¢‚é‚©AfindNotNames‚ªŠÜ‚Ü‚ê‚Ä‚¢‚È‚¢‚à‚Ì‚ğ‹ì“®‚³‚¹‚é
-  void runFromChildren(
+  void runFromChildrens(
     const std::vector<std::string>& objectNames1,
     const std::vector<std::string>& objectNotNames2 = {})
   {

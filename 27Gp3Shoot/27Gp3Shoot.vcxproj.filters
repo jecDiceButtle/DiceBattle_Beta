@@ -79,9 +79,6 @@
     <ClInclude Include="..\lib\gplib.h">
       <Filter>プログラムファイル\lib</Filter>
     </ClInclude>
-    <ClInclude Include="..\lib\ci_ext\object.hpp">
-      <Filter>プログラムファイル\lib\ext</Filter>
-    </ClInclude>
     <ClInclude Include="..\lib\ci_ext\DrawObj.hpp">
       <Filter>プログラムファイル\lib\ext</Filter>
     </ClInclude>
@@ -223,13 +220,16 @@
     <ClInclude Include="src\animator.hpp">
       <Filter>プログラムファイル\game\Stage1\Animator</Filter>
     </ClInclude>
-    <ClInclude Include="src\rule_turn.hpp">
-      <Filter>プログラムファイル\game\Stage1\rule\sub</Filter>
-    </ClInclude>
     <ClInclude Include="src\phase_main.h">
       <Filter>プログラムファイル\game\Stage1\phase</Filter>
     </ClInclude>
     <ClInclude Include="src\rule_move.h">
+      <Filter>プログラムファイル\game\Stage1\rule\sub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\lib\ci_ext\object.hpp">
+      <Filter>プログラムファイル\lib\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rule_turn.hpp">
       <Filter>プログラムファイル\game\Stage1\rule\sub</Filter>
     </ClInclude>
   </ItemGroup>

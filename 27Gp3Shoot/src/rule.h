@@ -70,6 +70,15 @@ namespace game
 
 	public:
 
+		Rule(const std::string& objectName);
+
+		/*
+			@brief				ダイスのマスの更新
+			@param[in] pos		更新先のマス
+			@param[in] dice		更新するダイス([0]プレイヤー,[1]ダイスNo.)
+		*/
+		void updateMasu(const ci_ext::Vec3i& pos);
+		void updateMasu(const ci_ext::Vec3i& pos, const std::vector<int>& dice);
 		/*
 			@brief			引数の場所のオブジェクトを確認
 			@param[in] pos	確認する場所
@@ -109,7 +118,7 @@ namespace game
 		void NextPhase();
 
 	
-		Rule(const std::string& objectName);
+		
 		void init() override;
 		void render() override;
 		void update() override;

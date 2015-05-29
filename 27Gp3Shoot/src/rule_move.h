@@ -60,6 +60,8 @@ namespace game
 		//ƒtƒŒ[ƒ€ˆ—
 		void update() override;
 
+		
+
 	};
 }
 

@@ -40,6 +40,7 @@ namespace game
 		STATE							state_;			//アニメの種類
 		std::string						method_;		//処理の詳細データ、Vectorになる場合あり
 		int								frame_;			//フレーム数
+		bool							stepF_;			//実行中フラグ(true：実行中）
 
 
 		//*************************************************//
@@ -65,6 +66,18 @@ namespace game
 
 		}
 
+		
+	public:
+		
+		/*
+			@brief		アニメーション終了確認
+		*/
+		bool isfinish()
+		{
+			return !stepF_;
+		}
+
+
 		/*
 			@brief					コンストラクタ
 			@param[in] objectName	オブジェクト名
@@ -72,17 +85,13 @@ namespace game
 			@param[in] state		アニメーションの種類
 			@param[in] method		処理内容
 		*/
-	public:
-
-		/*
-			@param[in]	start 開始プレイヤー(0:1Pスタート ,1:2Pスタート)
-		*/
 		Animator(const std::string& objectName, const std::weak_ptr<ci_ext::Object>& prule, STATE state, const std::string& method = "")
 			:
 			Object(objectName),
 			p_rule(prule),
 			state_(state),
-			method_(method)
+			method_(method),
+			stepF_(true)
 		{
 			switch (state_)
 			{
@@ -95,13 +104,19 @@ namespace game
 		//フレーム処理
 		void update() override
 		{
-			if(--frame_ <= 0)
+			//実行中なら
+			if (stepF_)
 			{
-				kill();
-			}
-			if (gplib::input::CheckPush(gplib::input::KEY_BTN0))
-			{
-				kill();
+				//アニメフレーム数
+				if (--frame_ <= 0)
+				{
+					stepF_ = false;
+				}
+				//強制終了
+				if (gplib::input::CheckPush(gplib::input::KEY_BTN0))
+				{
+					stepF_ = false;
+				}
 			}
 		}
 

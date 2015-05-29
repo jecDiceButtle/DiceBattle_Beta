@@ -19,6 +19,7 @@
 #include "dice.h"
 #include "board.h"
 
+#include <stdexcept>
 
 namespace game
 {
@@ -28,13 +29,91 @@ namespace game
 
 
 	//**************************************************************************************//
-	//関数記述
+	//コンストラクタ
 	//**************************************************************************************//
-	
+
+	Rule::Rule(const std::string& objectName)
+		:
+		Object(objectName),
+		phase_(SUMMON),
+		turn_(PLAYER_A)
+	{
+		diceno_ = 0;
+	}
+	void Rule::init()
+	{
+		//++++++++++++++++++++++++++++++++++++++++++++
+		//	ダイスの開始マス座標（マジックナンバー）
+		const ci_ext::Vec3i STARTMASU[2][2] =
+		{
+			{ ci_ext::Vec3i(1, 0, 0), ci_ext::Vec3i(3, 0, 0) },
+			{ ci_ext::Vec3i(1, 0, 4), ci_ext::Vec3i(3, 0, 4) }
+		};
+		//++++++++++++++++++++++++++++++++++++++++++++
+
+		//プレイヤーデータ二人分
+		for (int i = 0; i < 2; i++){
+
+			PlayerData	player;
+
+			//ダイス分
+			for (int j = 0; j < 2; j++){
+				DiceData dice;
+				dice.masu = STARTMASU[i][j];
+				dice.p_dice = insertAsChild(new game::Dice("dice", gplib::math::GetRandom<int>(0, 2), i, dice.masu));
+				dice.show_ = true;
+
+				player.dice_.push_back(dice);
+			}
+
+			player_.push_back(player);
+		}
+
+		//++++++++++++++++++++++++++++++++++++++++++++
+		//	ボードの状態（仮配置）
+		for (int i = 0; i < 5; i++){
+			std::vector<int> temp;
+			for (int i = 0; i < 5; i++){
+				temp.push_back(0);
+			}
+			board_.push_back(temp);
+		}
+		//++++++++++++++++++++++++++++++++++++++++++++
+
+		//オブジェクトの追加
+
+		p_board = insertAsChild(new Board("board"));		//ボード
+		p_camera = insertAsChild(new Camera("camera"));		//カメラ
+
+		insertAsChild(new Back("stageback", "TitleBack"));	//背景
+
+		//カットイン追加予定
+
+
+
+		//フェーズオブジェクト追加
+		//insertAsChild(new PhaseSummon("phase_summon", this->selfPtr()));
+	}
+
+	//**************************************************************************************//
+	//　関数記述
+	//**************************************************************************************//
+
+
 	ci_ext::Vec3i Rule::getDiceMasu()
 	{
 		//選択されているダイスの座標を返す
 		return player_[(int)turn_].dice_[diceno_].masu;
+	}
+
+	void Rule::updateMasu(const ci_ext::Vec3i& pos)
+	{
+		//現在選択されているダイス
+		updateMasu(pos, { turn_, diceno_ });
+	}
+	void Rule::updateMasu(const ci_ext::Vec3i& pos, const std::vector<int>& dice)
+	{
+		player_[(int)turn_].dice_[diceno_].masu = pos;
 	}
 
 	void Rule::sendMsg(const std::string& msg, const std::string& process)
@@ -71,7 +150,7 @@ namespace game
 			for (auto dPos : p.dice_){
 				
 				//ダイスが画面にいる場合のみ検索
-				if (dPos.show_)
+				if (!dPos.show_)
 					continue;
 				//ダイスがいた場合
 				if (dPos.masu == pos){
@@ -86,11 +165,22 @@ namespace game
 
 	int Rule::getBoardState(ci_ext::Vec3i pos)
 	{
-		//範囲外をはじく
-		if (board_.size() < pos.x() || board_[0].size() < pos.z())
+		try{
+			return board_.at(pos.x()).at(pos.z());
+		}
+		catch(const std::out_of_range&) {
+			
+			//範囲外をはじく
 			return -1;
 
-		return board_[pos.x()][pos.z()];
+		}
+
+		
+		/*
+		if (board_.size() < pos.x() || board_[0].size() < pos.z())
+			return -1;
+			*/
+		
 	}
 
 	void Rule::NextPhase()
@@ -133,71 +223,9 @@ namespace game
 	}
 
 	//**************************************************************************************//
-	//デフォルト関数
+	//　オーバーライド関数
 	//**************************************************************************************//
 
-	Rule::Rule(const std::string& objectName)
-		:
-		Object(objectName),
-		phase_(SUMMON),
-		turn_(PLAYER_A)
-	{
-		diceno_ = 0;
-	}
-	void Rule::init()
-	{
-		//++++++++++++++++++++++++++++++++++++++++++++
-		//	ダイスの開始マス座標（マジックナンバー）
-		const ci_ext::Vec3i STARTMASU[2][2] =
-		{
-			{ ci_ext::Vec3i(1, 0, 0), ci_ext::Vec3i(3, 0, 0) },
-			{ ci_ext::Vec3i(1, 4, 0), ci_ext::Vec3i(3, 4, 0) }
-		};
-		//++++++++++++++++++++++++++++++++++++++++++++
-
-		//プレイヤーデータ二人分
-		for (int i = 0; i < 2; i++){
-			
-			PlayerData	player;
-			
-			//ダイス分
-			for (int j = 0; j < 2; j++){
-				DiceData dice;
-				dice.masu = STARTMASU[i][j];
-				dice.p_dice = insertAsChild(new game::Dice("dice", gplib::math::GetRandom<int>(0, 2), i, dice.masu));
-				dice.show_ = true;
-
-				player.dice_.push_back(dice);
-			}
-
-			player_.push_back(player);
-		}
-
-		//++++++++++++++++++++++++++++++++++++++++++++
-		//	ボードの状態（仮配置）
-		for (int i = 0; i < 5; i++){
-			std::vector<int> temp;
-			for (int i = 0; i < 5; i++){
-				temp.push_back(0);
-			}
-			board_.push_back(temp);
-		}
-		//++++++++++++++++++++++++++++++++++++++++++++
-
-		//オブジェクトの追加
-
-		p_board = insertAsChild(new Board("board"));		//ボード
-		p_camera = insertAsChild(new Camera("camera"));		//カメラ
-
-		insertAsChild(new Back("stageback", "TitleBack"));	//背景
-
-		//カットイン追加予定
-
-
-
-		//フェーズオブジェクト追加
-		//insertAsChild(new PhaseSummon("phase_summon", this->selfPtr()));
-	}
 	void Rule::render()
 	{
 		//デバッグ用

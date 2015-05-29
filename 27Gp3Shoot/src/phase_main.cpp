@@ -31,7 +31,7 @@ namespace game
 		state_ = ANIM;
 
 		//選択の変更を不可に
-		pauseFromChildren("rule_selelct");
+		//pauseFromChildren("rule_selelct");
 
 		//アニメーションさせる
 		insertAsChild(new Animator("animator_movedice", p_rule, Animator::DICEMOVE, masu));
@@ -52,7 +52,7 @@ namespace game
 	void PhaseMain::init()
 	{
 		//移動系オブジェクト
-		insertAsChild(new game::RuleMove("rule_move", p_rule));
+		insertAsChildPause(new game::RuleMove("rule_move", p_rule));
 
 		//選択オブジェクト
 	}
@@ -66,20 +66,27 @@ namespace game
 		case game::PhaseMain::ANIM:
 
 			//アニメーション終了したら
-			auto objs = getObjectsFromChildren({ "animator" });
-			for (auto obj : objs){
+			auto obj = ci_ext::weak_to_shared<Animator>(getObjectFromChildren("animator_movedice"));
 
-				if (obj.lock()->isDead()){
+			if (obj->isfinish()){
 
-					//入力を受け付ける
-					runFromChildren({ "rule" }, {});
-					state_ = WAIT;
-				}
+				//アニメーションオブジェクト停止
+				obj->kill();
 
-
-				break;
+				//入力を受け付ける
+				runFromChildrens({ "rule" });
+				state_ = WAIT;
 			}
+
+
+			break;
 		}
 	}
+
+	void PhaseMain::resume()
+	{
+		runAll();
+	}
+	
 }
 

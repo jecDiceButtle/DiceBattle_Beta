@@ -196,7 +196,6 @@ namespace game
 				if (mVec[0] == "frame" && mVec.size() > 1)
 					fTime = stoi(mVec[1]);
 			}
-
 			prepareMove(masu);
 		}
 			
@@ -523,7 +522,7 @@ namespace game
 	}
 	void Dice::setDicePosY(const ci_ext::Vec3i &masu)
 	{
-		pos_.z((masu.y() - 2) * 10.f);
+		pos_.z((masu.z() - 2) * 10.f);
 	}
 	int Dice::getTopType(){
 		return face[0];

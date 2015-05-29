@@ -69,6 +69,11 @@ namespace game
 		*/
 		void update() override;
 
+		/*
+			@brief					‘Ò‹@‚©‚ç‚Ì–ß‚èˆ—
+		*/
+		void resume() override;
+
 
 	};
 }
