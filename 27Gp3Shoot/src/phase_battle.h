@@ -16,7 +16,7 @@
 
 namespace game
 {
-	class PhaseMain : public ci_ext::Object
+	class PhaseBattle : public ci_ext::Object
 	{
 
 		//*************************************************//
@@ -25,9 +25,8 @@ namespace game
 	private:
 		
 		enum STATE{
-			WAIT,				//待機
-			ANIM,				//アニメーション中
-			END,				//フェーズ終了
+			//バトル計算中
+			//アニメーション中
 
 		};
 
@@ -45,17 +44,6 @@ namespace game
 		//*************************************************//
 	private:
 
-		/*
-			@brief					アニメ中の処理
-		*/
-		void anim();
-
-		/*
-			@brief					ダイスの点滅処理
-			@param[in]	clear		True:点滅 False:消灯
-		*/
-		void selectDice(const bool clear);
-
 		
 	public:
 		/*
@@ -70,7 +58,7 @@ namespace game
 			@param[in] objectName	オブジェクト名
 			@param[in] pParent		親のポインタ
 		*/
-		PhaseMain(const std::string& objectName, const std::weak_ptr<ci_ext::Object>& prule);
+		PhaseBattle(const std::string& objectName, const std::weak_ptr<ci_ext::Object>& prule);
 		/*
 			@brief					子の初期化
 		*/
@@ -85,6 +73,7 @@ namespace game
 			@brief					待機からの戻り処理
 		*/
 		void resume() override;
+
 
 	};
 }

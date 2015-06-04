@@ -26,7 +26,7 @@ namespace game
 	//関数記述
 	//**************************************************************************************//
 
-	void PhaseMain::moveDiceAnim(const std::string& masu)
+	void PhaseBattle::moveDiceAnim(const std::string& masu)
 	{
 		state_ = ANIM;
 
@@ -37,71 +37,53 @@ namespace game
 		insertAsChild(new Animator("animator_movedice", p_rule, Animator::DICEMOVE, masu));
 	}
 
-	void PhaseMain::anim()
-	{
-		//アニメーション終了したら
-		auto obj = ci_ext::weak_to_shared<Animator>(getObjectFromChildren("animator_movedice"));
-
-		if (obj->isfinish()){
-
-			//アニメーションオブジェクト停止
-			obj->kill();
-
-			//入力を受け付ける
-			runFromChildrens({ "rule" });
-			state_ = END;
-		}
-	}
-	void PhaseMain::selectDice(const bool clear)
-	{
-		std::string msg;
-
-		msg = clear ? "select,on" : "select,off";
-
-		ci_ext::weak_to_shared<Rule>(p_rule)->sendMsg(msg,"selectdice");
-	}
-
 
 	//**************************************************************************************//
 	//デフォルト関数
 	//**************************************************************************************//
 
 
-	PhaseMain::PhaseMain(const std::string& objectName, const std::weak_ptr<ci_ext::Object>& prule) :
+	PhaseBattle::PhaseBattle(const std::string& objectName, const std::weak_ptr<ci_ext::Object>& prule) :
 		Object(objectName),
 		p_rule(prule),
 		state_(WAIT)
 	{}
 
-	void PhaseMain::init()
+	void PhaseBattle::init()
 	{
 		//移動系オブジェクト
 		insertAsChildPause(new game::RuleMove("rule_move", p_rule));
 
 		//選択オブジェクト
-		selectDice(true);
 	}
 	//フレーム処理
-	void PhaseMain::update()
+	void PhaseBattle::update()
 	{
 		switch (state_)
 		{
-		case game::PhaseMain::WAIT:
+		case game::PhaseBattle::WAIT:
 			break;
-		case game::PhaseMain::ANIM:
+		case game::PhaseBattle::ANIM:
 
-			anim();
-			break;
-		case game::PhaseMain::END:
-			
-			selectDice(false);
-			ci_ext::weak_to_shared<Rule>(p_rule)->NextPhase();
-			this->kill();
+			//アニメーション終了したら
+			auto obj = ci_ext::weak_to_shared<Animator>(getObjectFromChildren("animator_movedice"));
+
+			if (obj->isfinish()){
+
+				//アニメーションオブジェクト停止
+				obj->kill();
+
+				//入力を受け付ける
+				runFromChildrens({ "rule" });
+				state_ = WAIT;
+			}
+
+
 			break;
 		}
 	}
 
-	void PhaseMain::resume()
+	void PhaseBattle::resume()
 	{
 		runAll();
 	}

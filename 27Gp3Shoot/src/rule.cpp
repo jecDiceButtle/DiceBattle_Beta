@@ -39,6 +39,18 @@ namespace game
 		turn_(PLAYER_A)
 	{
 		diceno_ = 0;
+
+
+		//++++++++++++++++++++++++++++++++++++++++++++
+		//	ボードの状態（仮配置,-1が穴）
+		board_ = {
+			{ 0, 0, 0, 0 },
+			{ 0, 0, -1, 0 },
+			{ 0, 0, 0, 0 },
+			{ -1, 0, 0, 0 }
+		};
+		//++++++++++++++++++++++++++++++++++++++++++++
+
 	}
 	void Rule::init()
 	{
@@ -69,26 +81,14 @@ namespace game
 			player_.push_back(player);
 		}
 
-		//++++++++++++++++++++++++++++++++++++++++++++
-		//	ボードの状態（仮配置）
-		for (int i = 0; i < 5; i++){
-			std::vector<int> temp;
-			for (int i = 0; i < 5; i++){
-				temp.push_back(0);
-			}
-			board_.push_back(temp);
-		}
-		//++++++++++++++++++++++++++++++++++++++++++++
-
 		//オブジェクトの追加
 
-		p_board = insertAsChild(new Board("board"));		//ボード
+		p_board = insertAsChild(new Board("board",board_));		//ボード
 		p_camera = insertAsChild(new Camera("camera"));		//カメラ
 
 		insertAsChild(new Back("stageback", "TitleBack"));	//背景
 
 		//カットイン追加予定
-
 
 
 		//フェーズオブジェクト追加
@@ -134,6 +134,13 @@ namespace game
 				receiver = player_[(int)turn_].dice_[diceno_].p_dice;
 				break;
 			}
+			//選択のとき
+			if (ms == "selectdice")
+			{
+				//現在選択中のダイスに送信する
+				receiver = player_[(int)turn_].dice_[diceno_].p_dice;
+				break;
+			}
 		}
 
 		//=====================================
@@ -174,13 +181,6 @@ namespace game
 			return -1;
 
 		}
-
-		
-		/*
-		if (board_.size() < pos.x() || board_[0].size() < pos.z())
-			return -1;
-			*/
-		
 	}
 
 	void Rule::NextPhase()

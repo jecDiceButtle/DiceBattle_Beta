@@ -198,6 +198,14 @@ namespace game
 			}
 			prepareMove(masu);
 		}
+		if (msgVec[0] == "select")
+		{
+			if (msgVec[1] == "on")
+				OnSelectFlag();
+			else if(msgVec[1] == "off")
+				OffSelectFlag();
+
+		}
 			
 	}
 

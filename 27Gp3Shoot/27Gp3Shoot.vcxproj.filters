@@ -32,9 +32,6 @@
     <Filter Include="プログラムファイル\game\Dice">
       <UniqueIdentifier>{4407d0e2-5bcf-4872-9c89-4216043e86e0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="プログラムファイル\game\DiceManager">
-      <UniqueIdentifier>{98658e91-0e4a-446d-a18e-f4dae2f6f392}</UniqueIdentifier>
-    </Filter>
     <Filter Include="プログラムファイル\game\camera">
       <UniqueIdentifier>{c67055e0-d991-47b5-b569-460edc6367e7}</UniqueIdentifier>
     </Filter>
@@ -73,6 +70,12 @@
     </Filter>
     <Filter Include="プログラムファイル\game\Stage1\rule\sub">
       <UniqueIdentifier>{9ef83178-e7f8-4fe9-98fb-c916b24d6c07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="プログラムファイル\game\Stage1\phase\main">
+      <UniqueIdentifier>{95c6e6c7-c879-447d-95da-246bd8fe5c15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="プログラムファイル\game\Stage1\phase\battle">
+      <UniqueIdentifier>{fc8a80e5-70f5-4f90-acee-00aea008e248}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -220,9 +223,6 @@
     <ClInclude Include="src\animator.hpp">
       <Filter>プログラムファイル\game\Stage1\Animator</Filter>
     </ClInclude>
-    <ClInclude Include="src\phase_main.h">
-      <Filter>プログラムファイル\game\Stage1\phase</Filter>
-    </ClInclude>
     <ClInclude Include="src\rule_move.h">
       <Filter>プログラムファイル\game\Stage1\rule\sub</Filter>
     </ClInclude>
@@ -231,6 +231,9 @@
     </ClInclude>
     <ClInclude Include="src\rule_turn.hpp">
       <Filter>プログラムファイル\game\Stage1\rule\sub</Filter>
+    </ClInclude>
+    <ClInclude Include="src\phase_main.h">
+      <Filter>プログラムファイル\game\Stage1\phase\main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -327,11 +330,11 @@
     <ClCompile Include="src\rule.cpp">
       <Filter>プログラムファイル\game\Stage1\rule</Filter>
     </ClCompile>
-    <ClCompile Include="src\phase_main.cpp">
-      <Filter>プログラムファイル\game\Stage1\phase</Filter>
-    </ClCompile>
     <ClCompile Include="src\rule_move.cpp">
       <Filter>プログラムファイル\game\Stage1\rule\sub</Filter>
+    </ClCompile>
+    <ClCompile Include="src\phase_main.cpp">
+      <Filter>プログラムファイル\game\Stage1\phase\main</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
