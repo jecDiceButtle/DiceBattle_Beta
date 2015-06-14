@@ -26,7 +26,7 @@ namespace game
 	//関数記述
 	//**************************************************************************************//
 
-	void PhaseMain::moveDiceAnim(const std::string& masu)
+	void PhaseMain::moveDiceAnim(const std::string& dir)
 	{
 		state_ = ANIM;
 
@@ -34,7 +34,7 @@ namespace game
 		//pauseFromChildren("rule_selelct");
 
 		//アニメーションさせる
-		insertAsChild(new Animator("animator_movedice", p_rule, Animator::DICEMOVE, masu));
+		insertAsChild(new Animator("animator_movedice", p_rule, Animator::DICEMOVE, dir));
 	}
 
 	void PhaseMain::anim()
@@ -54,11 +54,15 @@ namespace game
 	}
 	void PhaseMain::selectDice(const bool clear)
 	{
-		std::string msg;
+		std::string msg,str;
 
+		//オンオフ判別
 		msg = clear ? "select,on" : "select,off";
 
-		ci_ext::weak_to_shared<Rule>(p_rule)->sendMsg(msg,"selectdice");
+		str = "selectdice," + ci_ext::weak_to_shared<Rule>(p_rule)->getDiceKeyword();
+
+		//メッセージ送信
+		ci_ext::weak_to_shared<Rule>(p_rule)->sendMsg(msg,str);
 	}
 
 
@@ -101,10 +105,14 @@ namespace game
 		}
 	}
 
+	PhaseMain::~PhaseMain()
+	{
+		selectDice(false);
+	}
+
 	void PhaseMain::resume()
 	{
 		runAll();
 	}
-	
 }
 

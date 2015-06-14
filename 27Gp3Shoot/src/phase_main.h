@@ -71,6 +71,10 @@ namespace game
 			@param[in] pParent		親のポインタ
 		*/
 		PhaseMain(const std::string& objectName, const std::weak_ptr<ci_ext::Object>& prule);
+
+
+		~PhaseMain();
+
 		/*
 			@brief					子の初期化
 		*/

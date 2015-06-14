@@ -1,11 +1,10 @@
 /*
-*	ファイル名	：	phase_main.h
+*	ファイル名	：	phase_battle.h
 *	製作者		：	丸山洋一郎
-*	制作日		：	2015/05/27
-*	内容		：	メインフェイズ実行時中のオブジェクト。
+*	制作日		：	2015/06/05
+*	内容		：	バトルフェイズ実行時中のオブジェクト。
 *					【現在動作させているもの】
-*					・移動
-*					・選択
+*					・バトル計算
 *					・アニメーション
 */
 #pragma once
@@ -25,9 +24,10 @@ namespace game
 	private:
 		
 		enum STATE{
-			//バトル計算中
-			//アニメーション中
-
+			CALC,		//バトル計算中
+			PUSHANIM,	//押し出しアニメーション中
+			FALLANIM,	//落ちアニメーション中
+			END,		//終了
 		};
 
 		//*************************************************//
@@ -44,14 +44,12 @@ namespace game
 		//*************************************************//
 	private:
 
+		void calc();
+		void pushAnim();
+		void fallAnim();
+
 		
 	public:
-		/*
-			@brief					ダイスの移動アニメーション
-			@param[in] masu			移動先のマス座標
-			@param[in] pParent		親のポインタ
-		*/
-		void moveDiceAnim(const std::string& masu);
 
 		/*
 			@brief					コンストラクタ

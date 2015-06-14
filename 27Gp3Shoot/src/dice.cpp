@@ -198,6 +198,8 @@ namespace game
 			}
 			prepareMove(masu);
 		}
+
+		//‘I‘ğˆ—
 		if (msgVec[0] == "select")
 		{
 			if (msgVec[1] == "on")
@@ -205,6 +207,16 @@ namespace game
 			else if(msgVec[1] == "off")
 				OffSelectFlag();
 
+		}
+
+		//‰Ÿ‚³‚êˆ—
+		if (msgVec[0] == "push"){
+
+		}
+
+		//—‰ºˆ—
+		if (msgVec[0] == "fall"){
+			
 		}
 			
 	}

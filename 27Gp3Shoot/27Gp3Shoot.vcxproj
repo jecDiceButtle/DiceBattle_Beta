@@ -125,6 +125,7 @@
     <ClInclude Include="src\Menu.hpp" />
     <ClInclude Include="src\monster.h" />
     <ClInclude Include="src\movableObject.h" />
+    <ClInclude Include="src\phase_battle.h" />
     <ClInclude Include="src\phase_main.h" />
     <ClInclude Include="src\player.h" />
     <ClInclude Include="src\rule.h" />
@@ -163,6 +164,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\monster.cpp" />
     <ClCompile Include="src\movableObject.cpp" />
+    <ClCompile Include="src\phase_battle.cpp" />
     <ClCompile Include="src\phase_main.cpp" />
     <ClCompile Include="src\player.cpp" />
     <ClCompile Include="src\rule.cpp" />

@@ -1,15 +1,14 @@
 /*
-*	ファイル名	：	phase_main.cpp
+*	ファイル名	：	phase_battle.cpp
 *	製作者		：	丸山洋一郎
-*	制作日		：	2015/05/27
-*	内容		：	メインフェイズ実行時中のオブジェクト。
+*	制作日		：	2015/06/05
+*	内容		：	バトルフェイズ実行時中のオブジェクト。
 *					【現在動作させているもの】
-*					・移動
-*					・選択
+*					・バトル計算
 *					・アニメーション
 */
 #pragma once
-#include "phase_main.h"
+#include "phase_battle.h"
 #include "rule.h"
 #include "rule_move.h"
 #include "animator.hpp"
@@ -26,17 +25,24 @@ namespace game
 	//関数記述
 	//**************************************************************************************//
 
-	void PhaseBattle::moveDiceAnim(const std::string& masu)
+	void PhaseBattle::calc()
 	{
-		state_ = ANIM;
+		//ルールに現在選択されたダイスの場所を聞く
 
-		//選択の変更を不可に
-		//pauseFromChildren("rule_selelct");
+		//ルールに左右上下のマスに敵のダイスがいるかどうか聞きに行く
 
-		//アニメーションさせる
-		insertAsChild(new Animator("animator_movedice", p_rule, Animator::DICEMOVE, masu));
+		//いなかった場合はバトル終了
+
+
 	}
+	void PhaseBattle::pushAnim()
+	{
 
+	}
+	void PhaseBattle::fallAnim()
+	{
+
+	}
 
 	//**************************************************************************************//
 	//デフォルト関数
@@ -46,40 +52,31 @@ namespace game
 	PhaseBattle::PhaseBattle(const std::string& objectName, const std::weak_ptr<ci_ext::Object>& prule) :
 		Object(objectName),
 		p_rule(prule),
-		state_(WAIT)
+		state_(CALC)
 	{}
 
 	void PhaseBattle::init()
 	{
-		//移動系オブジェクト
-		insertAsChildPause(new game::RuleMove("rule_move", p_rule));
 
-		//選択オブジェクト
 	}
 	//フレーム処理
 	void PhaseBattle::update()
 	{
 		switch (state_)
 		{
-		case game::PhaseBattle::WAIT:
+		case game::PhaseBattle::CALC:
+			
 			break;
-		case game::PhaseBattle::ANIM:
-
-			//アニメーション終了したら
-			auto obj = ci_ext::weak_to_shared<Animator>(getObjectFromChildren("animator_movedice"));
-
-			if (obj->isfinish()){
-
-				//アニメーションオブジェクト停止
-				obj->kill();
-
-				//入力を受け付ける
-				runFromChildrens({ "rule" });
-				state_ = WAIT;
-			}
-
+		case game::PhaseBattle::PUSHANIM:
 
 			break;
+
+		case game::PhaseBattle::FALLANIM:
+			break;
+
+		case game::PhaseBattle::END:
+			break;
+
 		}
 	}
 

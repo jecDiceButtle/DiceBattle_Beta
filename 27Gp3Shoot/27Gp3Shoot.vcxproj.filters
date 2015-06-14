@@ -235,6 +235,9 @@
     <ClInclude Include="src\phase_main.h">
       <Filter>プログラムファイル\game\Stage1\phase\main</Filter>
     </ClInclude>
+    <ClInclude Include="src\phase_battle.h">
+      <Filter>プログラムファイル\game\Stage1\phase\battle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\lib\gplib.cpp">
@@ -335,6 +338,9 @@
     </ClCompile>
     <ClCompile Include="src\phase_main.cpp">
       <Filter>プログラムファイル\game\Stage1\phase\main</Filter>
+    </ClCompile>
+    <ClCompile Include="src\phase_battle.cpp">
+      <Filter>プログラムファイル\game\Stage1\phase\battle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

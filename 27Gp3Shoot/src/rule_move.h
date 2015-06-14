@@ -47,7 +47,7 @@ namespace game
 			@param[in] dir			移動する向き
 
 		*/
-		void moveDice(const ci_ext::Vec3i& dir);
+		void moveDice(const std::string& dir);
 
 		/*
 			@brief					コンストラクタ
@@ -56,6 +56,7 @@ namespace game
 		*/
 	public:
 		RuleMove(const std::string& objectName, const std::weak_ptr<ci_ext::Object>& prule);
+
 
 		//フレーム処理
 		void update() override;

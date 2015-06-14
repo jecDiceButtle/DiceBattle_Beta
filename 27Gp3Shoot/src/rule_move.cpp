@@ -21,7 +21,6 @@ namespace game
 	//作成するプログラムで必要となる変数、定数定義
 	//**************************************************************************************//
 
-
 	//**************************************************************************************//
 	//関数記述
 	//**************************************************************************************//
@@ -30,23 +29,23 @@ namespace game
 	{
 		if (gplib::input::CheckPush(gplib::input::KEY_LEFT))
 		{
-			moveDice(ci_ext::Vec3i(-1, 0, 0));
+			moveDice("west");
 		}
 		if (gplib::input::CheckPush(gplib::input::KEY_RIGHT))
 		{
-			moveDice(ci_ext::Vec3i(1, 0, 0));
+			moveDice("east");
 		}
 		if (gplib::input::CheckPush(gplib::input::KEY_UP))
 		{
-			moveDice(ci_ext::Vec3i(0, 0, 1));
+			moveDice("north");
 		}
 		if (gplib::input::CheckPush(gplib::input::KEY_DOWN))
 		{
-			moveDice(ci_ext::Vec3i(0, 0, -1));
+			moveDice("south");
 		}
 	}
 
-	void RuleMove::moveDice(const ci_ext::Vec3i& dir)
+	void RuleMove::moveDice(const std::string& dir)
 	{
 		//=============================
 		// ダイスが移動できるか確認
@@ -55,7 +54,7 @@ namespace game
 
 		//ダイスのマス座標から調べるマス座標を求める
 		ci_ext::Vec3i pos = rule->getDiceMasu();
-		pos += dir;
+		pos += rule->getDir(dir);
 
 		//移動できないボード
 		if (rule->getBoardState(pos) == -1)
@@ -68,15 +67,12 @@ namespace game
 		// ダイスの移動
 		//=============================
 
-		//移動先のマスの命令文"x=Xマス座標,z=Zマス座標"
-		std::string masu = "x=" + std::to_string(pos.x()) + ",z=" + std::to_string(pos.z());
-
-		//ダイス移動
-		auto parent = ci_ext::weak_to_shared<game::PhaseMain>(getParentPtr());
-		parent->moveDiceAnim(masu);
 		//ダイスマス座標を更新
 		rule->updateMasu(pos);
 
+		//ダイス移動
+		auto parent = ci_ext::weak_to_shared<game::PhaseMain>(getParentPtr());
+		parent->moveDiceAnim(dir);
 
 		//アニメーション中はキー入力を受け付けない
 		this->pause();
@@ -90,6 +86,7 @@ namespace game
 		Object(objectName),
 		p_rule(prule)
 	{}
+
 
 	//フレーム処理
 	void RuleMove::update()

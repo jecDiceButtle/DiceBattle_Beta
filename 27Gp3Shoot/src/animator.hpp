@@ -38,7 +38,7 @@ namespace game
 
 		std::weak_ptr<ci_ext::Object>	p_rule;			//親(ルールオブジェクト)ポインタ
 		STATE							state_;			//アニメの種類
-		std::string						method_;		//処理の詳細データ、Vectorになる場合あり
+		std::string						method_;		//処理の詳細データ、masutorになる場合あり
 		int								frame_;			//フレーム数
 		bool							stepF_;			//実行中フラグ(true：実行中）
 
@@ -51,18 +51,26 @@ namespace game
 		/*
 			@brief					ダイス移動時の初期化処理
 									ダイスを移動させる命令を送る。
-			@param[in] dir			方向(methodから入力)
+			@param[in] dir			方向(methodから入力),現在未使用
 		*/
-		void initMoveDice(const std::string& masu)
+		void initMoveDice(const std::string& dir)
 		{
 			frame_ = DICEMOVESPEED;
 
+
+			//移動先のマスの命令文"x=Xマス座標,z=Zマス座標"
+			auto pos = ci_ext::weak_to_shared<Rule>(p_rule)->getDiceMasu();
+			std::string masu = "x=" + std::to_string(pos.x()) + ",z=" + std::to_string(pos.z());
+
 			//ダイスに送るメッセージ
 			//"move,x座標,z座標,移動フレーム数"
-			std::string msg = "move," + masu + ",frame=" + std::to_string(frame_);
+			std::string msg = "move," + masu+ ",frame=" + std::to_string(frame_);
 
-			//ルールを介してダイスにメッセージを送る(movediceはRule確認用)
-			ci_ext::weak_to_shared<Rule>(p_rule)->sendMsg(msg, "movedice");
+			//ルールを介してダイスにメッセージを送る(strはRule判断用)
+			auto str = "movedice," + ci_ext::weak_to_shared<Rule>(p_rule)->getDiceKeyword();
+
+			
+			ci_ext::weak_to_shared<Rule>(p_rule)->sendMsg(msg, str);
 
 		}
 

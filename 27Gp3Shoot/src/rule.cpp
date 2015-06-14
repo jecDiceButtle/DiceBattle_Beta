@@ -27,7 +27,6 @@ namespace game
 	//作成するプログラムで必要となる変数、定数定義
 	//**************************************************************************************//
 
-
 	//**************************************************************************************//
 	//コンストラクタ
 	//**************************************************************************************//
@@ -36,7 +35,13 @@ namespace game
 		:
 		Object(objectName),
 		phase_(SUMMON),
-		turn_(PLAYER_A)
+		turn_(PLAYER_A),
+		dir_({
+			{ "west", ci_ext::Vec3i(-1, 0, 0) },
+			{ "east", ci_ext::Vec3i(1, 0, 0) },
+			{ "north", ci_ext::Vec3i(0, 0, 1) },
+			{ "south", ci_ext::Vec3i(0, 0, -1) },
+		})
 	{
 		diceno_ = 0;
 
@@ -65,20 +70,16 @@ namespace game
 
 		//プレイヤーデータ二人分
 		for (int i = 0; i < 2; i++){
-
-			PlayerData	player;
-
-			//ダイス分
 			for (int j = 0; j < 2; j++){
+
 				DiceData dice;
 				dice.masu = STARTMASU[i][j];
 				dice.p_dice = insertAsChild(new game::Dice("dice", gplib::math::GetRandom<int>(0, 2), i, dice.masu));
 				dice.show_ = true;
 
-				player.dice_.push_back(dice);
+				//データ追加
+				dice_[makeKeyword(i, j)] = dice;
 			}
-
-			player_.push_back(player);
 		}
 
 		//オブジェクトの追加
@@ -99,21 +100,61 @@ namespace game
 	//　関数記述
 	//**************************************************************************************//
 
+	//キーワード作成
+	std::string Rule::makeKeyword(const int player, const int dice)
+	{
+		//map配列のキー
+		std::string key = "";
 
+		//プレイヤー
+		if (player == 0){
+			key += "PLAYER:A_";
+		}
+		else if (player == 1){
+			key += "PLAYER:B_";
+		}
+		key += "DICE:" + std::to_string(dice);
+		return key;
+	}
+
+
+	ci_ext::Vec3i Rule::getDir(const std::string& dir) const
+	{
+		return dir_.at(dir);
+	}
 	ci_ext::Vec3i Rule::getDiceMasu()
 	{
-		//選択されているダイスの座標を返す
-		return player_[(int)turn_].dice_[diceno_].masu;
+		return getDiceMasu(makeKeyword((int)turn_, diceno_));
+	}
+	ci_ext::Vec3i Rule::getDiceMasu(const std::string& key)
+	{
+		ci_ext::Vec3i masu;
+		try{
+			//選択されているダイスの座標を返す
+			 masu = dice_.at(key).masu;
+		}
+		catch (const std::out_of_range&){
+			//error
+			return ci_ext::Vec3i(-1, -1, -1);
+		}
+		return masu;
 	}
 
 	void Rule::updateMasu(const ci_ext::Vec3i& pos)
 	{
 		//現在選択されているダイス
-		updateMasu(pos, { turn_, diceno_ });
+		updateMasu(pos, makeKeyword((int)turn_, diceno_));
 	}
-	void Rule::updateMasu(const ci_ext::Vec3i& pos, const std::vector<int>& dice)
+	void Rule::updateMasu(const ci_ext::Vec3i& pos, const std::string& key)
 	{
-		player_[(int)turn_].dice_[diceno_].masu = pos;
+		try{
+			//選択されているダイスの座標を返す
+			dice_.at(key).masu = pos;
+		}
+		catch (const std::out_of_range&){
+			//error
+		}
+		
 	}
 
 	void Rule::sendMsg(const std::string& msg, const std::string& process)
@@ -131,16 +172,25 @@ namespace game
 			if (ms == "movedice")
 			{
 				//現在選択中のダイスに送信する
-				receiver = player_[(int)turn_].dice_[diceno_].p_dice;
+				receiver = dice_.at(msgVec[1]).p_dice;
 				break;
 			}
 			//選択のとき
 			if (ms == "selectdice")
 			{
 				//現在選択中のダイスに送信する
-				receiver = player_[(int)turn_].dice_[diceno_].p_dice;
+				receiver = dice_.at(msgVec[1]).p_dice;
 				break;
 			}
+			//押された時
+			if(ms == "pushdice")
+			{
+				receiver = dice_.at(msgVec[1]).p_dice;
+				break;
+			}
+
+			//落ちた時
+
 		}
 
 		//=====================================
@@ -149,20 +199,18 @@ namespace game
 		postMsg(receiver, msg);
 	}
 	
-	int Rule::getExistObj(ci_ext::Vec3i pos)
+	int Rule::getExistObj(const ci_ext::Vec3i pos)
 	{
 
 		//ダイスが居るか確認する
-		for (auto p : player_){
-			for (auto dPos : p.dice_){
-				
-				//ダイスが画面にいる場合のみ検索
-				if (!dPos.show_)
-					continue;
-				//ダイスがいた場合
-				if (dPos.masu == pos){
-					return 1;
-				}
+		for (auto d : dice_){
+
+			//ダイスが画面にいる場合のみ検索
+			if (!d.second.show_)
+				continue;
+			//ダイスがいた場合
+			if (d.second.masu == pos){
+				return 1;
 			}
 		}
 
@@ -170,7 +218,30 @@ namespace game
 		return 0;
 	}
 
-	int Rule::getBoardState(ci_ext::Vec3i pos)
+	std::string Rule::getDiceKeyword()
+	{
+		//選択されている場所のダイスのキーワードを返す
+		return getDiceKeyword(getDiceMasu());
+	}
+
+	std::string Rule::getDiceKeyword(const ci_ext::Vec3i pos)
+	{
+		//ダイスが居るか確認する
+		for (auto d : dice_){
+
+			//ダイスが画面にいる場合のみ検索
+			if (!d.second.show_)
+				continue;
+
+			//ダイスがいた場合
+			if (d.second.masu == pos){
+				return d.first;
+			}
+		}
+		return "";
+	}
+
+	int Rule::getBoardState(const ci_ext::Vec3i pos)
 	{
 		try{
 			return board_.at(pos.x()).at(pos.z());
@@ -182,6 +253,8 @@ namespace game
 
 		}
 	}
+
+	
 
 	void Rule::NextPhase()
 	{
