@@ -80,6 +80,17 @@ namespace game
 		Rule(const std::string& objectName);
 
 		/*
+			@brief				敵対しているかどうかの確認
+			@param[in] keyA		自分のダイスキーワード
+			@param[in] keyB		相手のダイスキーワード
+			@return				敵対しているかどうか
+			@true				敵対している
+			@false				味方同士である
+		*/
+		bool checkEnemyDice(const std::string& keyA, const std::string& keyB);
+
+
+		/*
 			@brief				ダイスのマスの更新
 			@param[in] pos		更新先のマス
 			@param[in] dice		更新するダイスのキーワード

@@ -21,22 +21,36 @@ namespace game
 	//作成するプログラムで必要となる変数、定数定義
 	//**************************************************************************************//
 
-
 	//**************************************************************************************//
 	//関数記述
 	//**************************************************************************************//
 
 	void PhaseMain::moveDiceAnim(const std::string& dir)
 	{
-		state_ = ANIM;
+		//==========================
+		//	移動処理
+		//==========================
 
-		//選択の変更を不可に
-		//pauseFromChildren("rule_selelct");
+
+		//移動先のマスの命令文"x=Xマス座標,z=Zマス座標"
+		auto pos = ci_ext::weak_to_shared<Rule>(p_rule)->getDiceMasu();
+		std::string masu = "x=" + std::to_string(pos.x()) + ",z=" + std::to_string(pos.z());
+
+		//ダイスに送るメッセージ
+		//"move,x座標,z座標,移動フレーム数"
+		std::string msg = "move," + masu + ",frame=" + std::to_string(DICEMOVESPEED);
+
+
+		//ルールを介してダイスにメッセージを送る(strはRule判断用)
+		auto str = "movedice," + ci_ext::weak_to_shared<Rule>(p_rule)->getDiceKeyword();
+		ci_ext::weak_to_shared<Rule>(p_rule)->sendMsg(msg, str);
+
 
 		//アニメーションさせる
-		insertAsChild(new Animator("animator_movedice", p_rule, Animator::DICEMOVE, dir));
-	}
+		insertAsChild(new Animator("animator_movedice", p_rule, Animator::SKIPON, DICEMOVESPEED));
+		state_ = ANIM;
 
+	}
 	void PhaseMain::anim()
 	{
 		//アニメーション終了したら
@@ -74,7 +88,8 @@ namespace game
 	PhaseMain::PhaseMain(const std::string& objectName, const std::weak_ptr<ci_ext::Object>& prule) :
 		Object(objectName),
 		p_rule(prule),
-		state_(WAIT)
+		state_(WAIT),
+		DICEMOVESPEED(40)	//マジックナンバー
 	{}
 
 	void PhaseMain::init()
@@ -107,6 +122,7 @@ namespace game
 
 	PhaseMain::~PhaseMain()
 	{
+		//デバッグ用。
 		selectDice(false);
 	}
 

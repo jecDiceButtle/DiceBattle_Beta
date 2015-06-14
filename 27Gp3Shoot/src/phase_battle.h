@@ -30,6 +30,8 @@ namespace game
 			END,		//終了
 		};
 
+		const int PUSHSPEED;
+
 		//*************************************************//
 		//　変数
 		//*************************************************//
@@ -38,15 +40,49 @@ namespace game
 		STATE	state_;
 		std::weak_ptr<ci_ext::Object>	p_rule;			//親(ルールオブジェクト)ポインタ
 
+		struct Data
+		{
+			std::string dir_;							//移動先の方角
+			std::string key_;							//ダイスのキーワード
+
+			Data(){}
+			Data(const std::string dir, const std::string key):
+				dir_(dir), key_(key)
+			{}
+
+		};
+
+		std::vector<Data>	movedice_;					//移動ダイスのデータ
+
 
 		//*************************************************//
 		//　関数
 		//*************************************************//
 	private:
-
+		
+		
+		/*
+			@brief					計算時処理
+		*/
 		void calc();
-		void pushAnim();
+		/*
+			@brief					移動処理の初期化
+		*/
+		void initPushAnim();
+		/*
+			@brief					落下時処理
+		*/
 		void fallAnim();
+
+
+		/*
+			@brief					バトルの計算（再帰処理）
+									移動するダイスを見つけたら、movedice_へデータを追加していく。
+			@param[in]	dir			移動先の方角
+			@param[in]	masu		確認前の座標（現在の座標）
+			@param[in]	no			再帰処理を繰り返した回数
+		*/
+		void battleCalc(const std::string& dir, const ci_ext::Vec3i masu, const int no);
 
 		
 	public:

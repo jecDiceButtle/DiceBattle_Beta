@@ -11,6 +11,7 @@
 
 #include "rule.h"
 #include "phase_main.h"
+#include "phase_battle.h"
 #include <memory>
 #include <string>
 
@@ -64,7 +65,7 @@ namespace game
 		const ci_ext::Vec3i STARTMASU[2][2] =
 		{
 			{ ci_ext::Vec3i(1, 0, 0), ci_ext::Vec3i(3, 0, 0) },
-			{ ci_ext::Vec3i(1, 0, 4), ci_ext::Vec3i(3, 0, 4) }
+			{ ci_ext::Vec3i(2, 0, 0), ci_ext::Vec3i(3, 0, 4) }
 		};
 		//++++++++++++++++++++++++++++++++++++++++++++
 
@@ -115,6 +116,15 @@ namespace game
 		}
 		key += "DICE:" + std::to_string(dice);
 		return key;
+	}
+
+	bool Rule::checkEnemyDice(const std::string& keyA, const std::string& keyB)
+	{
+		auto keyAvec = gplib::text::split(keyA, "_");
+		auto keyBvec = gplib::text::split(keyB, "_");
+
+		//ダイス同士が敵対しているかの確認
+		return keyAvec[0] != keyBvec[0];
 	}
 
 
@@ -260,7 +270,7 @@ namespace game
 	{
 		//++++++++++++++++++++++++++++++++++++++++++++
 		//	カットイン待ち時間（マジックナンバー)
-		int wait = 120;
+		int wait = 1;
 		//++++++++++++++++++++++++++++++++++++++++++++
 
 
@@ -281,7 +291,7 @@ namespace game
 
 		case game::Rule::Phase::MAIN:
 			phase_ = Phase::BATTLE;
-			//insertAsChild(new PhaseBattle("phase_battle", this->selfPtr()));
+			insertAsChild(new PhaseBattle("phase_battle", this->selfPtr()));
 			break;
 
 		case game::Rule::Phase::BATTLE:
@@ -332,6 +342,15 @@ namespace game
 			break;
 		}
 		gplib::font::Draw_FontTextNC(120, 20, 0.f, str, ARGB(255, 0, 0, 0), 0);
+
+		int i = 0;
+		for (auto dice : dice_){
+
+			str = dice.first + " x: " + std::to_string(dice.second.masu.x()) + " z:" + std::to_string(dice.second.masu.z());
+			gplib::font::Draw_FontTextNC(300, 20 + i * 30, 0.f, str, ARGB(255, 255, 0, 0), 0);
+			i++;
+		}
+
 
 		gplib::graph::Draw_2DRefresh();
 #endif

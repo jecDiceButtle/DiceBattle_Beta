@@ -212,6 +212,26 @@ namespace game
 		//押され処理
 		if (msgVec[0] == "push"){
 
+			ci_ext::Vec3i masu = ci_ext::Vec3i::zero();		//移動先のマス座標
+			int		fTime;									//移動フレーム時間
+
+			//更に分割
+			for (auto ms : msgVec){
+				auto mVec = gplib::text::split(ms, "=");
+
+				//Xマス座標を取得
+				if (mVec[0] == "x" && mVec.size() > 1)
+					masu.x(stoi(mVec[1]));
+
+				//Zマス座標を取得
+				if (mVec[0] == "z" && mVec.size() > 1)
+					masu.z(stoi(mVec[1]));
+
+				//フレーム時間を取得
+				if (mVec[0] == "frame" && mVec.size() > 1)
+					fTime = stoi(mVec[1]);
+			}
+			prepareMove(masu);
 		}
 
 		//落下処理
