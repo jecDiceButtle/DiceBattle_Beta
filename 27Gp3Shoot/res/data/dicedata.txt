@@ -1,0 +1,4 @@
+;ダイス番号,ダイスXファイル,ダイステクスチャ,モンスターXファイル,モンスターテクスチャ,ダイス上面（１）,ダイス手前（２）,ダイス右面（３）,ダイス左面（４）,ダイス奥面（５）,ダイス下面（６）
+1,res/gra/x/dice.x,res/gra/x/dice.png,res/gra/x/tori.x,res/gra/x/tori.png,0,0,0,0,0,0
+2,res/gra/x/dice.x,res/gra/x/dice.png,res/gra/x/kuzira.x,res/gra/x/kuzira.png,0,0,0,0,0,0
+3,res/gra/x/dice.x,res/gra/x/dice.png,res/gra/x/kinoko.x,res/gra/x/kinoko.png,0,0,0,0,0,0

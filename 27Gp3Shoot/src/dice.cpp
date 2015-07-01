@@ -96,7 +96,6 @@ namespace game
 		matRot._43 = 0;
 		matRot._44 = 1;
 
-
 	}
 
 	bool Dice::isDying()
