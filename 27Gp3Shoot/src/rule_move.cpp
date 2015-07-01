@@ -31,15 +31,15 @@ namespace game
 		{
 			moveDice("west");
 		}
-		if (gplib::input::CheckPush(gplib::input::KEY_RIGHT))
+		else if (gplib::input::CheckPush(gplib::input::KEY_RIGHT))
 		{
 			moveDice("east");
 		}
-		if (gplib::input::CheckPush(gplib::input::KEY_UP))
+		else if (gplib::input::CheckPush(gplib::input::KEY_UP))
 		{
 			moveDice("north");
 		}
-		if (gplib::input::CheckPush(gplib::input::KEY_DOWN))
+		else if (gplib::input::CheckPush(gplib::input::KEY_DOWN))
 		{
 			moveDice("south");
 		}
@@ -75,7 +75,7 @@ namespace game
 		parent->moveDiceAnim(dir);
 
 		//アニメーション中はキー入力を受け付けない
-		this->pause();
+		this->kill();
 	}
 
 	//**************************************************************************************//

@@ -2,10 +2,12 @@
 #include "../../lib/ci_ext/object.hpp"
 #include "../../lib/ci_ext/vec3.hpp"
 
+//tuika
 #include "../../lib/dx_media_/dx_graphics3d.h"
 #include "../../lib/dx_media_/dx3dmeshmanager.h"
 #include "../../lib/ci_ext/DrawObj.hpp"
 #include "movableObject.h"
+//tuika
 
 
 namespace game
@@ -27,7 +29,9 @@ namespace game
 		//　変数
 		//*************************************************//
 	private:
-		vector<vector<int>> panel_;				//パネル
+		vector<vector<bool>> panel_;
+		int r, g, b;
+
 
 
 		//*************************************************//
@@ -39,39 +43,38 @@ namespace game
 	public:
 
 		/*
-			@brief							コンストラクタ
-			@param[in]	objectName			オブジェクト名
-			@return							なし
-			*/
+		@brief							コンストラクタ
+		@param[in]	objectName			オブジェクト名
+		@return							なし
+		*/
 		Board(const std::string& objectName);
-		Board(const std::string& objectName, const std::vector<std::vector<int>>& mapData_);
 
 
 		/*
-			@brief							描画
-			@return							なし
-			*/
+		@brief							描画
+		@return							なし
+		*/
 		void render() override;
 
 		/*
-			@brief							フレーム更新
-			@return							なし
-			*/
+		@brief							フレーム更新
+		@return							なし
+		*/
 		void update() override;
 
 
-		///*
-		//	@brief							座標の移動確認
-		//	@param[in]	pos					移動先の座標
-		//	@return							移動可能かどうか
-		//	@true							可
-		//	@false							不可
-		//*/
-		//bool isMovablePosition(const ci_ext::Vec3i &pos);
+		/*
+		@brief							座標の移動確認
+		@param[in]	pos					移動先の座標
+		@return							移動可能かどうか
+		@true							可
+		@false							不可
+		*/
+		bool isMovablePosition(const ci_ext::Vec3i &pos);
 
-		void colorChange(int i,int j);			//未実装
+		void colorChange(int i, int j);
 
-		bool HolePos(const ci_ext::Vec3i &pos);			//穴の場所　動くかわからない
+		bool HolePos(const ci_ext::Vec3i &pos);
 
 
 	};

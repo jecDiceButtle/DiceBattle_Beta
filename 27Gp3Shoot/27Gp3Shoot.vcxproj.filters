@@ -77,6 +77,9 @@
     <Filter Include="プログラムファイル\game\Stage1\phase\battle">
       <UniqueIdentifier>{fc8a80e5-70f5-4f90-acee-00aea008e248}</UniqueIdentifier>
     </Filter>
+    <Filter Include="プログラムファイル\game\Stage1\phase\summon">
+      <UniqueIdentifier>{2fff2462-d65e-4c92-942d-1e321e991555}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\lib\gplib.h">
@@ -238,6 +241,9 @@
     <ClInclude Include="src\phase_battle.h">
       <Filter>プログラムファイル\game\Stage1\phase\battle</Filter>
     </ClInclude>
+    <ClInclude Include="src\phase_summon.h">
+      <Filter>プログラムファイル\game\Stage1\phase\summon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\lib\gplib.cpp">
@@ -341,6 +347,9 @@
     </ClCompile>
     <ClCompile Include="src\phase_battle.cpp">
       <Filter>プログラムファイル\game\Stage1\phase\battle</Filter>
+    </ClCompile>
+    <ClCompile Include="src\phase_summon.cpp">
+      <Filter>プログラムファイル\game\Stage1\phase\summon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

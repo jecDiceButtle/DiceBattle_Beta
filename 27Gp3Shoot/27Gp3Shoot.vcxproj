@@ -127,6 +127,7 @@
     <ClInclude Include="src\movableObject.h" />
     <ClInclude Include="src\phase_battle.h" />
     <ClInclude Include="src\phase_main.h" />
+    <ClInclude Include="src\phase_summon.h" />
     <ClInclude Include="src\player.h" />
     <ClInclude Include="src\rule.h" />
     <ClInclude Include="src\rule_move.h" />
@@ -166,6 +167,7 @@
     <ClCompile Include="src\movableObject.cpp" />
     <ClCompile Include="src\phase_battle.cpp" />
     <ClCompile Include="src\phase_main.cpp" />
+    <ClCompile Include="src\phase_summon.cpp" />
     <ClCompile Include="src\player.cpp" />
     <ClCompile Include="src\rule.cpp" />
     <ClCompile Include="src\rule_move.cpp" />

@@ -27,10 +27,10 @@ namespace game
 	//作成するプログラムで必要となる変数、定数定義
 	//**************************************************************************************//
 
-	const Dice::TYPE Dice::ATKTYPE[6] =
-	{
-		TYPE::GU, TYPE::CH, TYPE::PA, TYPE::PA, TYPE::CH, TYPE::GU,
-	};
+	//const Dice::TYPE Dice::ATKTYPE[6] =
+	//{
+	//	TYPE::GU, TYPE::CH, TYPE::PA, TYPE::PA, TYPE::CH, TYPE::GU,
+	//};
 
 
 	//**************************************************************************************//
@@ -46,86 +46,60 @@ namespace game
 		MovableObject(
 		DrawObjf(objectName)
 		),
-		angle(0, 0, 0),
-		scale(10.f, 10.f, 10.f),
-		alpha(255),
-		rgb(255),
-		OFFSET(10.0f),
-
-		state_(IDOL),
-		dispstate_(DICE),
-		selected_(false),
-		defType_((TYPE)type),
+		//-------------定数------------//
 		playerID_(playerID),
-
-		ANIMFRAMES(30),
-		hougaku_(CENTER),
-		prepos_(0.f, 0.f, 0.f),
-		nextpos_(0.f, 0.f, 0.f),
-
-		RGBFLAG(false),
-
-		animcnt_(0),
+		defType_((TYPE)type),
+		/*p_mons*/
+		OFFSET(10.0f),
 
 		middleQ(0.f, 0.f, 0.f, 1.f),
 		startQ(0.f, 0.f, 0.f, 1.f),
-		endQ(0.f, 0.f, 0.f, 1.f),
-		rollAnim(0)
-
-
-	{
-		setDicePosX(masu);
-		setDicePosY(masu);
-		pos_.y(5.f);
-		setFace(GU, CH, PA);
+		endQ(0.f, 0.f, 0.f, 1.f)
 		
-		matRot._11 = 1;
-		matRot._12 = 0;
-		matRot._13 = 0;
-		matRot._14 = 0;
-		matRot._21 = 0;
-		matRot._22 = 1;
-		matRot._23 = 0;
-		matRot._24 = 0;
-		matRot._31 = 0;
-		matRot._32 = 0;
-		matRot._33 = 1;
-		matRot._34 = 0;
-		matRot._41 = 0;
-		matRot._42 = 0;
-		matRot._43 = 0;
-		matRot._44 = 1;
 
 
-	}
+	{
+		//-------------init------------//
+		/*playerID_*/
+		/*OFFSET*/
+		/*defType_*/
+		/*p_mons*/
 
-	bool Dice::isDying()
-	{
-		return state_ == DEAD;
-	}
-	
-	bool Dice::isMoving()
-	{
-		return state_ == MOVE;
-	}
+		//-------------render------------//
+		scale.set(10.f, 10.f, 10.f);
+		if (playerID_ == 0)
+		{
+			rgb.set(150, 150, 250);
+		
+		}
+		else
+		{
+			rgb.set(250, 150, 150);
 
-	void Dice::destroy()
-	{
-		state_ = DEAD;
-	}
+		}
 
-	void Dice::Spawn()
-	{
-		state_ = IDOL;
-	}
+		//-------------update------------//
+		frames_ = 0;
+		state_anim = WAIT;
+		state_do = DEFAULT;
+		selected_ = false;
+		RGBFLAG = false;
+		velocity_.set(0.f, 0.f, 0.f);
+		nowpos_.set((MasuToPos(masu).x()), 5.0f, (MasuToPos(masu).z()));
+		nextpos_.set(nowpos_);
 
-	int Dice::getAtkSpecies()
-	{
-		return static_cast<int>(face[0]);
-	}
-	int Dice::getDefSpecies()
-	{
-		return static_cast<int>(defType_);
+		//Qauternion
+		/*middleQ*/
+		/*startQ*/
+		/*endQ*/
+		frames_roll = 1.0f;
+		velocity_roll = 0.f;
+		D3DXMatrixIdentity(&matRot);
+
+		//-------------パラメーター------------//
+		setFace(GU, CH, PA);
+		/*defType_*/
+		/*nowpos_*/
 	}
 
 
@@ -133,7 +107,7 @@ namespace game
 	void Dice::render()
 	{
 
-		meshManage->drawMeshQuaternion(pos_, "dice", angle, ARGB(255, rgb, rgb, rgb), scale, matRot);
+		meshManage->drawMeshQuaternion(nowpos_, "dice", D3DXVECTOR3(0, 0, 0), ARGB(255, rgb.ix(), rgb.iy(), rgb.iz()), scale, matRot);
 
 		
 	}
@@ -141,33 +115,47 @@ namespace game
 	//update
 	void Dice::update()
 	{
-		/*getDicePosY();
-		getDicePosX();*/
-
-		switch (state_)
+		switch (state_anim)
 		{
-		case game::Dice::DEAD:
-			DoDead();
-			break;
-		case game::Dice::IDOL:
-			pos_.y(5.0f);
-			DoIdol();
+		case ANIMATION:
+			
+			switch (state_do)
+			{
+			case SUMMON:
+				Do_Summon();
+				break;
+			case PARALLEL:
+				Do_Parallel();
+				break;
+			case ROTATION:
+				Do_Rotation();
+				break;
+			case FALL:
+				Do_Fall();
+				break;
+			case BATTLE:
+				break;
+			}
+
 			break;
 
-		case game::Dice::MOVE:
-			DoMove();
+		case END:
+			End();
 			break;
 
-		case game::Dice::ATTACK:
-			Attack();
+		case WAIT:
+		
 			break;
 		}
 
-		//追加
-		auto monsobj = ci_ext::weak_to_shared<Monster>(p_mons);
-		monsobj->monster_move(pos_);
+		if (selected_)
+		{
+			Do_Select();
+		}
 
+		ci_ext::weak_to_shared<Monster>(p_mons)->monster_move(nowpos_);
 	}
+
 
 	void Dice::receiveMsg(std::weak_ptr<Object>& sender, const std::string& msg)
 	{
@@ -196,8 +184,11 @@ namespace game
 				if (mVec[0] == "frame" && mVec.size() > 1)
 					fTime = stoi(mVec[1]);
 			}
-			prepareMove(masu);
+
+			state_do = ROTATION;
+			Calc_Rotation(masu, fTime);
 		}
+
 
 		//選択処理
 		if (msgVec[0] == "select")
@@ -211,7 +202,8 @@ namespace game
 
 		//押され処理
 		if (msgVec[0] == "push"){
-
+			//state_do = PARALLEL;
+			//Calc_Parallel(masu, fTime);
 			ci_ext::Vec3i masu = ci_ext::Vec3i::zero();		//移動先のマス座標
 			int		fTime;									//移動フレーム時間
 
@@ -231,95 +223,254 @@ namespace game
 				if (mVec[0] == "frame" && mVec.size() > 1)
 					fTime = stoi(mVec[1]);
 			}
-			prepareMove(masu);
+
+			state_do = PARALLEL;
+			Calc_Parallel(masu, fTime);
 		}
 
 		//落下処理
 		if (msgVec[0] == "fall"){
-			
+			int		fTime;
+		for (auto ms : msgVec){
+
+			auto mVec = gplib::text::split(ms, "=");
+
+			//フレーム時間を取得
+			if (mVec[0] == "frame" && mVec.size() > 1)
+				fTime = stoi(mVec[1]);
+			}
+			state_do = FALL;
+			Calc_Fall(fTime);
 		}
 			
-	}
 
-	//===================================
-
-
-	//===================================
-	//	DoMove
-	//===================================
-	void Dice::DoMove()
-	{
-		if (state_ != MOVE) return;
-
-		MoveDice(state_);
-
-	}
-
-	//------------DoMove-------------//
-	/*
-	@brief							移動計算
-	@return							なし
-	*/
-	void Dice::MoveDice(Dice::STATE &pOut)
-	{
-
-		if (animcnt_ > ANIMFRAMES)
+		/////////////////////////////6/09追加
+		if (msgVec[0] == "summon")
 		{
-			pos_.x(nextpos().x());
-			pos_.z(nextpos().z());
+			ci_ext::Vec3i masu = ci_ext::Vec3i::zero();		//移動先のマス座標
+			int		fTime;									//移動フレーム時間
 
-			middleQ = endQ;
-			startQ = endQ;
+			//更に分割
+			for (auto ms : msgVec){
+				auto mVec = gplib::text::split(ms, "=");
 
-			pOut = IDOL;
-			animcnt_ = 0;
-			rollAnim = 0;
+				//Xマス座標を取得
+				if (mVec[0] == "x" && mVec.size() > 1)
+					masu.x(stoi(mVec[1]));
+
+				//Zマス座標を取得
+				if (mVec[0] == "z" && mVec.size() > 1)
+					masu.z(stoi(mVec[1]));
+
+				//フレーム時間を取得
+				if (mVec[0] == "frame" && mVec.size() > 1)
+					fTime = stoi(mVec[1]);
+			}
+			//召喚関数
+			state_do = SUMMON;
+			Calc_Summon(masu, fTime);
 
 		}
 
+		if (msgVec[0] == "end")
+		{
+			state_anim = END;
+
+		}
+		////////////////////////////////
+
+
+	}
+
+	//===================================
+
+
+	void Dice::End()
+	{
+		middleQ = endQ;
+		startQ = endQ;
+		/*D3DXQuaternionSlerp(&middleQ, &startQ, &endQ, 1.0f);*/
+
+		D3DXMatrixRotationQuaternion(&matRot, &endQ);
+
+		nowpos_.set(nextpos_);
+
+		state_anim = WAIT;
+	}
+
+	//アニメーション
+	//平行移動アニメーション
+	void Dice::Do_Parallel()
+	{
+		if (frames_-- >= 0 )
+		{
+			nowpos_ += velocity_;
+		}
 		else
 		{
-			animcnt_++;
-			ClacMove(pos_, hougaku());
-			rollAnim += 1.0f / (float)ANIMFRAMES;
-			D3DXQuaternionSlerp(&middleQ, &startQ, &endQ, rollAnim);
-			pOut = MOVE;
-
+			state_anim = END;
 		}
 
-		D3DXMatrixRotationQuaternion(&matRot, &middleQ);
-
-		return;
 	}
 
-	//------------MoveDice------------//
-	/*
-	@brief							移動計算
-	@return							なし
-	*/
-	void Dice::ClacMove(ci_ext::Vec3f &pOut_nowpos, const Dice::DIRECTION &hougaku)
+	void Dice::Do_Rotation()
 	{
+		if (frames_-- >= 0)
+		{
+			nowpos_ += velocity_;
+			frames_roll += velocity_roll;
+			D3DXQuaternionSlerp(&middleQ, &startQ, &endQ, frames_roll);
+			D3DXMatrixRotationQuaternion(&matRot, &middleQ);
+		}
+		else
+		{
+			state_anim = END;
+		}
+	}
 
-		float temp_pos_x = pOut_nowpos.x();
-		float temp_pos_z = pOut_nowpos.z();
+	void Dice::Do_Summon()
+	{
+		if (frames_-- >= 0)
+		{
+			nowpos_ += velocity_;
+		}
+		else
+		{
+			state_anim = END;
+		}
+	
+	}
 
 
-		switch (hougaku)
+
+	void Dice::Calc_Summon(const ci_ext::Vec3i &masu, const int in_frames)
+	{
+		float V = 0;
+		
+		frames_ = in_frames;
+
+		nextpos_.set(MasuToPos(masu));
+
+		V = OFFSET / frames_;
+
+		velocity_.set(0.f, V, 0.f);
+
+		nowpos_.set(nextpos_);
+		nowpos_.offset(0.f, -OFFSET, 0.f);
+
+		state_anim = ANIMATION;
+	}
+
+
+	void Dice::Do_Fall()
+	{
+		if (frames_-- >= 0)
+		{
+			nowpos_ += velocity_;
+		}
+		else
+		{
+			state_anim = END;
+		}
+
+	}
+
+
+
+	void Dice::Calc_Fall(const int in_frames)
+	{
+		float V = 0;
+
+		frames_ = in_frames;
+
+		V = -((OFFSET / frames_) * 2.0f);
+
+		nextpos_.set(nowpos_);
+		nextpos_.offset(0.f, -OFFSET*2.f, 0.f);
+
+		velocity_.set(0.f, V, 0.f);
+		
+		state_anim = ANIMATION;
+	}
+	void Dice::Calc_Rotation(const ci_ext::Vec3i &masu, const int in_frames)
+	{
+		float V = 0;
+		DIRECTION direction;
+
+		frames_ = in_frames;
+
+		nextpos_.set(MasuToPos(masu));
+
+		direction = TranceDirection(nextpos_, nowpos_);
+
+		V = OFFSET / frames_;
+
+
+		switch (direction)
 		{
 		case NORTH:
-			temp_pos_z += VELOCITY;
+			velocity_.set(0.f, 0.f, V);
+
 			break;
 
 		case SOUTH:
-			temp_pos_z -= VELOCITY;
+			velocity_.set(0.f, 0.f, -V);
 			break;
 
 		case EAST:
-			temp_pos_x += VELOCITY;
+			velocity_.set(V, 0.f, 0.f);
 			break;
 
 		case WEST:
-			temp_pos_x -= VELOCITY;
+			velocity_.set(-V, 0.f, 0.f);
+			break;
+
+		case CENTER:
+			break;
+		default:
+			break;
+		}
+	
+
+		velocity_roll = 1.0f / frames_;
+		frames_roll = 0.f;
+		setStartQuaternion(endQ, middleQ, direction);
+
+		swap(direction);
+
+		state_anim = ANIMATION;
+
+	}
+
+
+	void Dice::Calc_Parallel(const ci_ext::Vec3i &masu, const int in_frames)
+	{
+		float V = 0;
+
+		frames_ = in_frames;
+
+		nextpos_.set(MasuToPos(masu));
+
+		V = OFFSET / frames_;
+		
+
+		switch (TranceDirection(nextpos_, nowpos_))
+		{
+		case NORTH:
+			velocity_.set(0.f, 0.f, V);
+
+			break;
+
+		case SOUTH:
+			velocity_.set(0.f, 0.f, -V);
+			break;
+
+		case EAST:
+			velocity_.set(V, 0.f, 0.f);
+			break;
+
+		case WEST:
+			velocity_.set(-V, 0.f, 0.f);
 			break;
 
 		case CENTER:
@@ -328,10 +479,53 @@ namespace game
 			break;
 		}
 
-		pOut_nowpos.x(temp_pos_x);
-		pOut_nowpos.z(temp_pos_z);
-
+		state_anim = ANIMATION;
+	
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	//===================================
+	//	DoMove
+	//===================================
+	
+
+
+
 	//-------------------------------//
 	/*
 	@brief							クォータニオン初期化
@@ -395,84 +589,35 @@ namespace game
 	//===================================
 	//	DoIdol
 	//===================================
-	void Dice::DoIdol()
-	{
-		if (selected_)
-		{
-			change_rgb();
-		}
-		else
-		{
-			rgb = 255;
-		}
-	}
-
-	//------------DoIdol-------------//
-	void Dice::change_rgb()
+	void Dice::Do_Select()
 	{
 		if (RGBFLAG == false)
 		{
-			rgb -= 5;
-			if (rgb < 200)
+			rgb.offset(-5,-5,-5);
+			if (rgb.iy() < 100)
 			{
-				rgb = 200;
+				rgb.offset(5, 5, 5);
 				RGBFLAG = true;
 			}
 		}
 		if (RGBFLAG == true)
 		{
-			rgb += 5;
-			if (rgb > 255)
+			rgb.offset(5, 5, 5);
+			if (rgb.iy() > 150)
 			{
-				rgb = 255;
+				rgb.offset(-5, -5, -5);
 				RGBFLAG = false;
 			}
 		}
 	}
-	//-------------------------------//
 	//===================================
 
 
-
-
-	//===================================
-	//	Attack
-	//===================================
-	//-------------Attack------------//
-	void Dice::Attack()
-	{
-
-	}
-	//-------------------------------//
-	//===================================
-
-	//===================================
-	//	DoMove
-	//===================================
-	void Dice::DoDead()
-	{
-		pos_.y(255); //死んでる間は吹っ飛ばす
-		//monster_move
-		//auto monsobj = ci_ext::weak_to_shared<Monster>(p_mons);
-		//monsobj->monster_move(pos_);
-		//
-
-	}
-	//===================================
 
 
 	//===================================
 	//	アクセサ
 	//===================================
-	/*
-	@brief							アクセサ、待機中かどうか
-	@return							待機中かどうか
-	@true							待機中
-	*/
-	bool Dice::isIdoling()
-	{
-		return state_ == IDOL;
-	}
 
 	void Dice::OnSelectFlag()
 	{
@@ -481,32 +626,17 @@ namespace game
 	void Dice::OffSelectFlag()
 	{
 		selected_ = false;
-		rgb = 255;
-	}
+		RGBFLAG = false;
+		if (playerID_ == 0)
+		{
+			rgb.set(150, 150, 250);
 
-	/*
-		@brief					移動を準備（移動に必要な値等をセット）
-		@return					なし
-	*/
-	void Dice::prepareMove(Vec3i &masu)
-	{
-		Vec3f this_pos = MasuToPos(masu);
+		}
+		else
+		{
+			rgb.set(250, 150, 150);
 
-
-		//移動先方角を準備
-		hougaku(setHougaku(this_pos));
-
-		//方角から値をセット
-		swap(hougaku());
-
-		//方角からクォータニオンをセット
-		setStartQuaternion(endQ, middleQ, hougaku());
-
-		//移動先座標を設定
-		nextpos(this_pos);
-
-		//移動ステートに変更
-		state_ = MOVE;
+		}
 	}
 
 	//===================================
@@ -518,17 +648,18 @@ namespace game
 	@brief							移動方向フラグをセット
 	@return							DIRECT
 	*/
-	Dice::DIRECTION Dice::setHougaku(const Vec3f& p_pos)
+	Dice::DIRECTION Dice::TranceDirection(const Vec3f &p_nextpos, const Vec3f &p_nowpos)
 	{
-		if (pos_.x() == p_pos.x() && pos_.z() == p_pos.z())	return CENTER;
 
-		else if (pos_.x() < p_pos.x()) return EAST;
+		if ((int)p_nowpos.x() < (int)p_nextpos.x()) return EAST;
 
-		else if (p_pos.x() < pos_.x()) return WEST;
+		else if ((int)p_nextpos.x() < (int)p_nowpos.x()) return WEST;
 
-		else if (pos_.z() < p_pos.z()) return NORTH;
+		else if ((int)p_nowpos.z() < (int)p_nextpos.z()) return NORTH;
 
-		else if (p_pos.z() < pos_.z()) return SOUTH;
+		else if ((int)p_nextpos.z() < (int)p_nowpos.z()) return SOUTH;
+
+		else return CENTER;
 
 	}
 	//-------------------------------//
@@ -542,8 +673,9 @@ namespace game
 	{
 		Vec3f pos = (0.f, 0.f, 0.f);
 
-		pos.x((float)((masu.x() - 2) * 10));
-		pos.z((float)((masu.z() - 2) * 10));
+		pos.x(((float)((masu.x()) * OFFSET)+ 5.f));
+		pos.y(5.0f);
+		pos.z(((float)((masu.z()) * OFFSET)-5.f));
 
 		return pos;
 	}
@@ -552,21 +684,11 @@ namespace game
 
 		Vec3f rot = ((playerID_ == 0) ? Vec3f(0.f, 180.f, 0.f): Vec3f(0.f, 0.f, 0.f));
 
-		p_mons = insertAsChild(new Monster("monster", pos_, (int)defType_, rot));
+		p_mons = insertAsChild(new Monster("monster", nowpos_, (int)defType_, rot));
 
 	}
 
-	void Dice::setDicePosX(const ci_ext::Vec3i &masu)
-	{
-		pos_.x((masu.x() - 2) * 10.f);
-	}
-	void Dice::setDicePosY(const ci_ext::Vec3i &masu)
-	{
-		pos_.z((masu.z() - 2) * 10.f);
-	}
-	int Dice::getTopType(){
-		return face[0];
-	}
+
 
 
 
@@ -619,34 +741,6 @@ namespace game
 
 
 
-
-
-
-	//----------DIRECTION関数----------//
-	//@brief							デフォルトDIRECTON関数
-	Dice::DIRECTION Dice::hougaku()
-	{
-		return Dice::hougaku_;
-	}
-	//@brief							DIRECTONをセット
-	Dice::DIRECTION Dice::hougaku(const DIRECTION& hougaku_)
-	{
-		return Dice::hougaku_ = hougaku_;
-	}
-	//---------------------------------//
-
-	//-----------nextpos関数-----------//
-	//@brief							デフォルトnextpos関数
-	Vec3f Dice::nextpos()
-	{
-		return nextpos_;
-	}
-	//@brief							nextposをセット
-	Vec3f Dice::nextpos(const Vec3f& in_pos)
-	{
-		return nextpos_ = in_pos;
-	}
-	//---------------------------------//
 
 
 

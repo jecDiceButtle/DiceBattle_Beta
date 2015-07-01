@@ -86,39 +86,39 @@ namespace game
 		gplib::graph::Draw_2DClear();//tuika
 		std::string str = "P1_COST:" + std::to_string(cost[0]) + "  P2_COST:" + std::to_string(cost[1]);
 
-		//’Ç‰Á cost•`‰æ//////////////////////////////////////////////////////////
-		//player1
-		for (int i = 0; i < DEFAULTCOST; i++)
-		{
-			gplib::graph::Draw_Graphics(
-				pos_1P.ix() + COST_Space * i, pos_1P.iy(), pos_1P.z(),
-				"cost_back",
-				0, 0, COST_W, COST_H, 0, 2.f, 2.f);
-		}
-		for (int i = 0; i < cost[0]; i++)
-		{
-			gplib::graph::Draw_Graphics(
-				pos_1P.ix() + COST_Space * i, pos_1P.iy(), pos_1P.z(),
-				"cost",
-				0, 0, COST_W, COST_H, 0, 2.f, 2.f);
-		}
-		//////////////////////////////////////////////////////////////////////////
-		//player2
-		for (int i = 0; i < DEFAULTCOST; i++)
-		{
-			gplib::graph::Draw_Graphics(
-				pos_2P.ix() + COST_Space * -i, pos_2P.iy(), pos_2P.z(),
-				"cost_back",
-				0, 0, COST_W, COST_H, 0, 2.f, 2.f);
-		}
-		for (int i = 0; i < cost[1]; i++)
-		{
-			gplib::graph::Draw_Graphics(
-				pos_2P.ix() + COST_Space * -i, pos_2P.iy(), pos_2P.z(),
-				"cost",
-				0, 0, COST_W, COST_H, 0, 2.f, 2.f);
-		}
-		///////////////////////////////////////////////////////////////////////////
+		////’Ç‰Á cost•`‰æ//////////////////////////////////////////////////////////
+		////player1
+		//for (int i = 0; i < DEFAULTCOST; i++)
+		//{
+		//	gplib::graph::Draw_Graphics(
+		//		pos_1P.ix() + COST_Space * i, pos_1P.iy(), pos_1P.z(),
+		//		"cost_back",
+		//		0, 0, COST_W, COST_H, 0, 2.f, 2.f);
+		//}
+		//for (int i = 0; i < cost[0]; i++)
+		//{
+		//	gplib::graph::Draw_Graphics(
+		//		pos_1P.ix() + COST_Space * i, pos_1P.iy(), pos_1P.z(),
+		//		"cost",
+		//		0, 0, COST_W, COST_H, 0, 2.f, 2.f);
+		//}
+		////////////////////////////////////////////////////////////////////////////
+		////player2
+		//for (int i = 0; i < DEFAULTCOST; i++)
+		//{
+		//	gplib::graph::Draw_Graphics(
+		//		pos_2P.ix() + COST_Space * -i, pos_2P.iy(), pos_2P.z(),
+		//		"cost_back",
+		//		0, 0, COST_W, COST_H, 0, 2.f, 2.f);
+		//}
+		//for (int i = 0; i < cost[1]; i++)
+		//{
+		//	gplib::graph::Draw_Graphics(
+		//		pos_2P.ix() + COST_Space * -i, pos_2P.iy(), pos_2P.z(),
+		//		"cost",
+		//		0, 0, COST_W, COST_H, 0, 2.f, 2.f);
+		//}
+		/////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -203,18 +203,33 @@ namespace game
 
 		for (auto ms : msgVec){
 			//‚³‚ç‚É•ªŠ„
-			auto mVec = gplib::text::split(ms, "=");
+			
 
-			if (mVec[0] == "player")
+			if (ms == "player")
 			{
-				if(turn_ != std::stoi(mVec[1]))
+				if (turn_ != std::stoi(ms))
 				{
-					turn_ = std::stoi(mVec[1]);
+					turn_ = std::stoi(ms);
 					CostReset(turn_);
 					
 				}
 				
 			}
+			//‘I‘ðˆ—
+
+			if (ms == "player1")
+				{
+					LIFE_1P_W += 60;
+					life_posx += 72;
+					srcW -= 60;
+
+				}
+			else if (ms == "player2")
+				{
+					LIFE_2P_W -= 60;
+				}
+
+			
 		}
 		//if (msg == "@")				//’Ç‰Á@ˆßŠ} 1P‚ÌŸ‚¿•‰‚¯‚ÌƒƒbƒZ[ƒW‚ª—~‚µ‚¢‚Å‚·
 		//{
