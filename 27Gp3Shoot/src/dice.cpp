@@ -55,9 +55,6 @@ namespace game
 		middleQ(0.f, 0.f, 0.f, 1.f),
 		startQ(0.f, 0.f, 0.f, 1.f),
 		endQ(0.f, 0.f, 0.f, 1.f)
-		
-
-
 	{
 		//-------------init------------//
 		/*playerID_*/

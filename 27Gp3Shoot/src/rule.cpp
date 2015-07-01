@@ -85,18 +85,16 @@ namespace game
 				//++++++++++++++++++++++++++++++++++++++++++++
 
 				//プレイヤーデータ二人分
-				for (int i = 0; i < 2; i++){
-					//tuika
-					PlayerData	player;
-					for (int j = 0; j < 2; j++){
+				for (int player = 0; player < 2; player++){
+					for (int no = 0; no < 2; no++){
 
 						DiceData dice;
-						dice.masu = STARTMASU[i][j];
-						dice.p_dice = insertAsChild(new game::Dice("dice", gplib::math::GetRandom<int>(0, 2), i, dice.masu));
+						dice.masu = STARTMASU[player][no];
+						dice.p_dice = insertAsChild(new game::Dice("dice", gplib::math::GetRandom<int>(0, 2), player, dice.masu));
 						dice.show_ = true;
 
 						//データ追加
-						dice_[makeKeyword(i, j)] = dice;
+						dice_[makeKeyword(player, no)] = dice;
 
 						//tuika
 						player.dice_.push_back(dice);
