@@ -64,6 +64,14 @@ namespace game
 			//入力を受け付ける
 			runFromChildrens({ "rule" });
 			state_ = END;
+
+			std::string msg;
+
+			msg = "end," ;
+
+			ci_ext::weak_to_shared<Rule>(p_rule)->sendMsg(msg, "enddice," + ci_ext::weak_to_shared<Rule>(p_rule)->getDiceKeyword());
+
+			/*ci_ext::weak_to_shared<Rule>(p_rule)->NextPhase();*/
 		}
 	}
 	void PhaseMain::selectDice(const bool clear)
@@ -89,7 +97,7 @@ namespace game
 		Object(objectName),
 		p_rule(prule),
 		state_(WAIT),
-		DICEMOVESPEED(40)	//マジックナンバー
+		DICEMOVESPEED(12)	//マジックナンバー
 	{}
 
 	void PhaseMain::init()
@@ -122,8 +130,8 @@ namespace game
 
 	PhaseMain::~PhaseMain()
 	{
-		//デバッグ用。
-		selectDice(false);
+		////デバッグ用。
+		//selectDice(false);
 	}
 
 	void PhaseMain::resume()

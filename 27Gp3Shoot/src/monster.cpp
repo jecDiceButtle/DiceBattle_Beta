@@ -37,6 +37,7 @@ namespace game
 		monster_num(monsternum),
 		m_angle(angle)
 	{
+		m_pos.offset(0.f, OFFSETY, 0.f);
 		count = 0;
 		moveflag = true;
 	}
@@ -46,20 +47,20 @@ namespace game
 		//m_angle = Vec3f(0.f, 0.f, 0.f);
 		Vec3f scale(10.f, 10.f, 10.f);
 
-		auto pos = m_pos.offset(0.f, OFFSETY, 0.f);
+		
 
 		switch (monster_num){
 			//グー、火
 		case 0:
-			meshManage->drawMesh(pos, "tori", m_angle, ARGB(255, 200, 200, 200), scale);
+			meshManage->drawMesh(m_pos, "tori", m_angle, ARGB(255, 200, 200, 200), scale);
 			break;
 			//チョキ、木
 		case 1:
-			meshManage->drawMesh(pos, "kinoko", m_angle, ARGB(255, 200, 200, 200), scale);
+			meshManage->drawMesh(m_pos, "kinoko", m_angle, ARGB(255, 200, 200, 200), scale);
 			break;
 			//パー、水
 		case 2:
-			meshManage->drawMesh(pos, "kuzira", m_angle, ARGB(255, 200, 200, 200), scale);
+			meshManage->drawMesh(m_pos, "kuzira", m_angle, ARGB(255, 200, 200, 200), scale);
 			break;
 		}
 	}
@@ -78,14 +79,15 @@ namespace game
 
 	void Monster::monster_move(Vec3f p){
 
-		m_pos = p;
+		m_pos.x(p.x());
+		m_pos.z(p.z());
 
 	}
 	
 
 	void Monster::updownmove(){
 		angle += D3DXToRadian(1.f);
-		Vec3f f = Vec3f(0.f, ((float)sin(angle) * 3.f)/4.f, 0.f);
+		Vec3f f = Vec3f(0.f, ((float)sin(angle))/40.f, 0.f);
 		m_pos += f;
 	}
 }
